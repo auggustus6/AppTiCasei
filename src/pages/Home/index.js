@@ -36,7 +36,7 @@ function Home(props) {
     hasToken = async () => {
         const userAsync = await AsyncStorage.getItem('@userLogged');
         const user = JSON.parse(userAsync);
-        
+        const tokenFacebook = await AsyncStorage.getItem('@tokenFacebook');
         const token = await AsyncStorage.getItem('@token');
   
         if (user && token) {
@@ -45,6 +45,12 @@ function Home(props) {
                 payload: { ...user, token }
             })
             props.navigation.setParams({ user });
+        } else if (tokenFacebook){
+            console.log('Logado com facebook');
+        }
+        
+        else {
+            return false;
         }
     }
 

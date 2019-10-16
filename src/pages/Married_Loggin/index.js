@@ -53,15 +53,14 @@ function Married_Login({ navigation }) {
           <TextButton>ENTRAR</TextButton>
         </ButtonSubmit>
 
-        <Button onPress={() => navigation.navigate('Conta')}>
-          <Text>Já possui conta? Faça Login!</Text>
+        <Button style={{ marginVertical: 20 }} onPress={() => navigation.navigate('Conta')}>
+          <Text style={{ textAlign: 'center' }}>Não possui conta? Crie sua conta!</Text>
         </Button>
 
 
       </Form>
 
-      <SmallRules>Após criar sua conta você terá acesso à criar seu casamento
-e enviar para seus amigos o código de acesso.</SmallRules>
+      <SmallRules>Após criar sua conta você poderá interagir com os noivos.</SmallRules>
 
     </Container>
   );

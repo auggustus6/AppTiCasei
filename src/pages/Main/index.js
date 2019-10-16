@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import {
@@ -15,19 +15,16 @@ import {
 } from './styles';
 
 import logo from '~/assets/images/logotipo.png';
-import bgImage from '~/assets/images/backgroundImage.png'
-
-
+import bgImage from '~/assets/images/backgroundImage.png';
 import arrowSVG from '~/assets/images/Arrow.png';
 
-import { async_getMarried } from '~/store/actions/marriedAction';
+import {
+  async_getMarried
+} from '~/store/actions/marriedAction';
 
 function Main({ navigation }) {
   const dispatch = useDispatch();
-  const married = useSelector(state => state.married);
   const [code, setCode] = useState(0);
-
-
 
   useEffect(() => {
     hasCode();
@@ -36,7 +33,7 @@ function Main({ navigation }) {
 
   hasCode = async () => {
     const code = await AsyncStorage.getItem('@CodeMarried');
-    console.log(code);
+
     if (code) {
       dispatch(async_getMarried(code));
     }

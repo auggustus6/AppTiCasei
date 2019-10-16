@@ -42,8 +42,9 @@ export default function MarriedReducers(state = INITIAL_STATE, action) {
                     ...state.dataMarried, gallery: state.dataMarried.gallery.map(galeria => {
                         if (galeria._id === action.payload.idImage) {
                             galeria.commentaries = [...galeria.commentaries, {
-                                _id: Math.random().toString,
+                                _id: Math.random().toString(),
                                 author: action.payload.author,
+                                genre: action.payload.genre,
                                 commentarie: action.payload.comment
                             }]
                         }

@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import { TouchableOpacity as Button, Text, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 import { loggedAccount } from '~/store/actions/userAction';
 
 import {
     Container,
+    ContainerImage,
+    ButtonChangeImage,
     Form,
-    TitleForm,
     InputForms,
     ButtonSubmit,
     TextButton,
-    SmallRules
 } from './styles';
 
-import IconAccount from '~/assets/svgs/IconAccount.svg';
+import Follows from './Follows';
 import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -23,6 +23,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 function Married_Configs({ navigation }) {
     const dispatch = useDispatch();
+    const userLogged = useSelector(state => state.user);
     const [account, setAccount] = useState({
         Email: '',
         Password: ''
@@ -32,7 +33,7 @@ function Married_Configs({ navigation }) {
         dispatch({
             type: 'LOGOUT_USER'
         })
-        await AsyncStorage.multiRemove(['@token','@userLogged'])
+        await AsyncStorage.multiRemove(['@token', '@userLogged', '@tokenFacebook'])
         navigation.navigate('Main');
     }
 
@@ -40,42 +41,49 @@ function Married_Configs({ navigation }) {
     handleAccount = () => dispatch(loggedAccount(account));
 
     return (
-      
-            <Container>
-                <IconAccount width={120} height={120} />
 
-                <Form>
-                    <TitleForm>CONFIGURACOES</TitleForm>
-
-                    <InputForms
-                        placeholder="E-mail de acesso"
-                        placeholderTextColor="#B6B3B3"
-                        underlineColorAndroid="transparent"
-                        onChangeText={email => setAccount({ ...account, Email: email })} />
-                    <InputForms
-                        placeholder="Senha de acesso"
-                        placeholderTextColor="#B6B3B3"
-                        underlineColorAndroid="transparent"
-                        onChangeText={password => setAccount({ ...account, Password: password })} />
+        <Container>
+            <ContainerImage>
+                <Icon name="image" size={140} color="#eee" />
+                <ButtonChangeImage>
+                    <Icon name="upload-cloud" size={20} color="#fff" />
+                </ButtonChangeImage>
+            </ContainerImage>
 
 
-                    <ButtonSubmit onPress={handleAccount}>
-                        <TextButton>ENTRAR</TextButton>
-                    </ButtonSubmit>
 
-                    <Button onPress={handleLogout}>
-                        <Text>Sair</Text>
-                    </Button>
+            <Form>
 
-                </Form>
+                <InputForms
+                    placeholder="Nome completo"
+                    value={userLogged.Nome}
+                    placeholderTextColor="#B6B3B3"
+                    underlineColorAndroid="transparent" />
 
-                <SmallRules>
-                    Após criar sua conta você terá acesso à criar seu casamento
-                e enviar para seus amigos o código de acesso.
-            </SmallRules>
+                <InputForms
+                    placeholder="E-mail de acesso"
+                    value={userLogged.Email}
+                    editable={false}
+                    placeholderTextColor="#B6B3B3"
+                    underlineColorAndroid="transparent"
+                    onChangeText={email => setAccount({ ...account, Email: email })} />
 
-            </Container>
-      
+
+                <Follows />
+
+                <ButtonSubmit onPress={handleAccount}>
+                    <TextButton>Salvar</TextButton>
+                </ButtonSubmit>
+
+
+                <Button style={{ marginVertical: 20 }} onPress={handleLogout}>
+                    <Text style={{ textAlign: 'center' }}>Sair</Text>
+                </Button>
+
+            </Form>
+
+        </Container>
+
     );
 }
 

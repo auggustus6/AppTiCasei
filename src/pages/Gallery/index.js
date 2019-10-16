@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { View, Dimensions, TouchableOpacity as Button } from 'react-native';
 
@@ -24,6 +24,8 @@ import {
     InputCommentaries
 } from './styles';
 
+import avatarBoy from '~/assets/images/avatarBoy.png'
+import avatarGirl from '~/assets/images/avatarGirl.png'
 import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -35,16 +37,16 @@ function Gallery() {
     const married = useSelector(state => state.married);
     const userLogged = useSelector(state => state.user);
 
-
     const [comment, setComment] = useState({
         author: '',
+        genre: userLogged.genre,
         comment: ''
     })
 
 
 
     submitPost = async (idImage) => {
-        if (comment !== '') {
+        if (comment.comment !== '') {
             const idMarried = await AsyncStorage.getItem('@idMarried');
             dispatch(async_postComment(idMarried, idImage, comment))
             setComment('');
@@ -57,7 +59,7 @@ function Gallery() {
                 return (
                     <ContainerCard key={feed._id}>
                         <CardHeader>
-                            <Avatar />
+                            <Avatar source={{ uri: married.dataMarried.banner_url }} />
                             <TitleHeader>{married.dataMarried.husband} e {married.dataMarried.wife}</TitleHeader>
                             <ContainerDate>
                                 <Date>08/10/2019</Date>
@@ -83,7 +85,7 @@ function Gallery() {
                                 feed.commentaries.map(comment => {
                                     return (
                                         <CardComments key={comment._id}>
-                                            <Avatar />
+                                            <Avatar source={comment.genre === 'Masculino' ? avatarBoy : avatarGirl} />
                                             <View style={{ flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start' }}>
                                                 <Author>{comment.author}</Author>
                                                 <Comment>{comment.commentarie}</Comment>
@@ -93,12 +95,7 @@ function Gallery() {
                                 })
                             }
 
-                            {/* <ShowMore onPress={() => openComments(feed, index)}>
-                                <ShowText>{moreText ? 'Esconder' : 'Expandir'}</ShowText>
-                            </ShowMore> */}
-
                             <ContainerInput>
-
                                 {!userLogged.idUser ?
 
                                     <TitleHeader>Você precisa estar logado
@@ -111,7 +108,7 @@ function Gallery() {
                                             placeholderTextColor="#ddd"
                                             underlineColorAndroid="transparent"
                                             value={comment.comment}
-                                            onChangeText={(text) => setComment({ author: userLogged.Email, comment: text })}
+                                            onChangeText={(text) => setComment({ author: userLogged.Email, comment: text, genre:userLogged.genre })}
                                         />
                                         <Button onPress={() => submitPost(feed._id)}>
                                             <Icon name="navigation" size={22} color="#333" />

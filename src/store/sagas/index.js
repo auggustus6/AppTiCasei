@@ -63,7 +63,7 @@ async function callComment(action) {
 
 function* postComment(action) {
   yield put({ type: 'REQUEST_MARRIED' })
-  console.log(action);
+
   try {
     const resp = yield call(callComment, action);
 
@@ -73,7 +73,8 @@ function* postComment(action) {
         message: resp.data.message,
         idImage: action.payload.idImage,
         comment: action.payload.comment.comment,
-        author: action.payload.comment.author
+        author: action.payload.comment.author,
+        genre:action.payload.comment.genre
       }
     })
 
@@ -85,9 +86,9 @@ function* postComment(action) {
 
 
 async function callUserCreate(action) {
-  const { Email, Password } = action.payload.user;
+  const { Email, Password, Nome, genre, type } = action.payload.user;
 
-  const response = await api.post('account/register', { Email, Password })
+  const response = await api.post('account/register', { Email, Password, Nome, genre, type })
   return response;
 }
 
@@ -106,6 +107,8 @@ function* createUser(action) {
     yield put({
       type: 'CREATE_USER',
       payload: {
+        Nome: response.data.Nome,
+        genre: response.data.genre,
         Email: response.data.Email,
         token: response.data.token,
         id: response.data.id,
@@ -114,6 +117,9 @@ function* createUser(action) {
 
     yield call(storagedToken, response.data.token);
     yield call(storagedUser, JSON.stringify(response.data));
+    yield put(navService.navigate('Home', {
+      user: response.data
+    }))
 
   } catch (error) {
     console.log(error);
@@ -129,6 +135,8 @@ function* loggedUser(action) {
     yield put({
       type: 'AUTH_LOGGED',
       payload: {
+        Nome: response.data.Nome,
+        genre: response.data.genre,
         Email: response.data.Email,
         id: response.data.id,
         assignedTo: response.data.assignedTo,
@@ -137,6 +145,9 @@ function* loggedUser(action) {
     })
     yield call(storagedToken, response.data.token);
     yield call(storagedUser, JSON.stringify(response.data));
+    yield put(navService.navigate('Home', {
+      user: response.data
+    }))
 
   } catch (error) {
     console.log(error);

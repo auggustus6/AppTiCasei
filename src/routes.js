@@ -13,6 +13,7 @@ import Donation from './pages/Donation';
 
 // Tabs about page event
 import Location from './pages/Location';
+import RSVP from './pages/RSVP';
 
 // Pages about login
 import Married_Account from '~/pages/Married_Account';
@@ -43,7 +44,7 @@ const RootScreen = createDrawerNavigator({
     Evento:
         createMaterialTopTabNavigator({
             Location,
-            Gallery
+            RSVP
         }, optionsTopNavigator)
 }, optionsRootScreen)
 

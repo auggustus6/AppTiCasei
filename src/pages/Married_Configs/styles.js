@@ -1,16 +1,32 @@
 import styled from 'styled-components/native';
 
-export const Container = styled.View`
-    flex:1;
+export const Container = styled.ScrollView``;
+
+export const ContainerImage = styled.ImageBackground`
+    background:#ddd;
+    padding:10px;
+    height:200px;
     align-items:center;
     justify-content:center;
-    padding:20px;
+`;
+
+export const ButtonChangeImage = styled.TouchableOpacity`
+    position:absolute;
+    bottom:-25;
+    right:10px;
+    align-self:flex-end;
+    width:60px;
+    height:60px;
+    background-color:#672F9E;
+    border-radius:30px;
+    align-items:center;
+    justify-content:center;
 `;
 
 
 export const Form = styled.View`
-    align-self:stretch;
-    
+    align-self:stretch;  
+    padding:20px;
 `;
 
 export const TitleForm = styled.Text`
@@ -20,13 +36,14 @@ export const TitleForm = styled.Text`
     color:#979797;
 `;
 
-export const InputForms = styled.TextInput`
-    background:#E8E8E8;
+export const InputForms = styled.TextInput.attrs({
+    borderBottomWidth: 1,
+    borderBottomColor: '#999',
+})`
     padding:20px;
     margin:10px 0px;
     border-radius:100px;
     text-align:center;
-  
 `;
 
 export const ButtonSubmit = styled.TouchableOpacity`
@@ -41,8 +58,3 @@ export const TextButton = styled.Text`
     text-align:center;
 `;
 
-export const SmallRules = styled.Text`
-    font-size:9px;
-    color:#979797;
-    text-align:center;
-`;

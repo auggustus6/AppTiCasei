@@ -26,8 +26,14 @@ export const InputForms = styled.TextInput`
     margin:10px 0px;
     border-radius:100px;
     text-align:center;
-  
 `;
+
+export const FormGroup = styled.View.attrs({
+    borderBottomColor: '#3333',
+    borderBottomWidth: 2,
+})``
+
+export const Select = styled.Picker``
 
 export const ButtonSubmit = styled.TouchableOpacity`
     background:#672F9E;

@@ -1,5 +1,7 @@
 
 const INITIAL_STATE = {
+    Nome: '',
+    genre: '',
     Email: '',
     Password: '',
     token: null,
@@ -21,6 +23,8 @@ export default function UserReducers(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 loading: false,
+                Nome: action.payload.Nome,
+                genre: action.payload.genre,
                 Email: action.payload.Email,
                 token: action.payload.token,
                 idUser: action.payload.id,
@@ -31,6 +35,8 @@ export default function UserReducers(state = INITIAL_STATE, action) {
 
             return {
                 ...state,
+                Nome: action.payload.Nome,
+                genre: action.payload.genre,
                 Email: action.payload.Email,
                 assignedTo: action.payload.assignedTo,
                 idUser: action.payload.id,
@@ -44,6 +50,8 @@ export default function UserReducers(state = INITIAL_STATE, action) {
         case 'LOGGED_USER': {
             return {
                 ...state,
+                Nome: action.payload.Nome,
+                genre: action.payload.genre,
                 Email: action.payload.Email,
                 assignedTo: action.payload.assignedTo,
                 idUser: action.payload.id,

@@ -41,7 +41,7 @@ export const optionsRoot = {
     initialRouteName: 'MainScreen',
     defaultNavigationOptions: ({ navigation }) => {
         const userParams = navigation.state.routes[0].params;
-        console.log(userParams);
+    
         return {
             title: `${navigation.state.routes[navigation.state.index].routeName}`,
             headerStyle: {
