@@ -2,6 +2,11 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
+    GraphRequest,
+    GraphRequestManager
+} from 'react-native-fbsdk';
+
+import {
     Container,
     CardWelcome,
     ContainerImage,
@@ -36,21 +41,60 @@ function Home(props) {
     hasToken = async () => {
         const userAsync = await AsyncStorage.getItem('@userLogged');
         const user = JSON.parse(userAsync);
+
         const tokenFacebook = await AsyncStorage.getItem('@tokenFacebook');
         const token = await AsyncStorage.getItem('@token');
-  
-        if (user && token) {
+
+
+        if (user && token && !tokenFacebook) {
             dispatch({
                 type: 'LOGGED_USER',
                 payload: { ...user, token }
             })
             props.navigation.setParams({ user });
-        } else if (tokenFacebook){
-            console.log('Logado com facebook');
+
+            // Se você tiver o token e o tokenfacebook ele loga com o facebook
+        } else if (tokenFacebook && token) {
+            logged_facebook(tokenFacebook)
         }
-        
         else {
             return false;
+        }
+    }
+
+    logged_facebook = (token) => {
+        const infoRequest = new GraphRequest('/me', {
+            accessToken: token,
+            parameters: {
+                fields: {
+                    string: 'id, email, picture.type(large),gender,name'
+                }
+            }
+        }, loginCallback)
+        new GraphRequestManager().addRequest(infoRequest).start();
+    }
+
+    loginCallback = async (error, result) => {
+        if (error) {
+            console.log(error);
+        } else {
+            const tokenFacebook = await AsyncStorage.getItem('@tokenFacebook');
+
+            let user = {};
+            console.log(result);
+            user.id = result.id; 
+            user.Nome = result.name;
+            user.Email = result.email;
+            user.image = result.picture.data.url,
+            user.genre = 'Masculino';
+            user.type = 'Facebook';
+
+            dispatch({
+                type: 'LOGGED_USER',
+                payload: { ...user, tokenFacebook }
+            })
+            props.navigation.setParams({ user });
+
         }
     }
 

@@ -108,7 +108,7 @@ function Gallery() {
                                             placeholderTextColor="#ddd"
                                             underlineColorAndroid="transparent"
                                             value={comment.comment}
-                                            onChangeText={(text) => setComment({ author: userLogged.Email, comment: text, genre:userLogged.genre })}
+                                            onChangeText={(text) => setComment({ author: userLogged.Nome, comment: text, genre:userLogged.genre })}
                                         />
                                         <Button onPress={() => submitPost(feed._id)}>
                                             <Icon name="navigation" size={22} color="#333" />

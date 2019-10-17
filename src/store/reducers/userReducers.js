@@ -3,11 +3,15 @@ const INITIAL_STATE = {
     Nome: '',
     genre: '',
     Email: '',
+    type: '',
     Password: '',
+    image:'',
     token: null,
+    tokenFacebook: null,
     idUser: null,
     assignedTo: null,
     loading: false,
+    error: false,
     message: ''
 }
 
@@ -16,6 +20,7 @@ export default function UserReducers(state = INITIAL_STATE, action) {
         case 'REQUEST_USERS':
             return {
                 ...state,
+                error: false,
                 loading: true
             }
 
@@ -24,6 +29,8 @@ export default function UserReducers(state = INITIAL_STATE, action) {
                 ...state,
                 loading: false,
                 Nome: action.payload.Nome,
+                type: action.payload.type,
+                image: action.payload.image ? action.payload.image : null,
                 genre: action.payload.genre,
                 Email: action.payload.Email,
                 token: action.payload.token,
@@ -37,6 +44,7 @@ export default function UserReducers(state = INITIAL_STATE, action) {
                 ...state,
                 Nome: action.payload.Nome,
                 genre: action.payload.genre,
+                image: action.payload.image ? action.payload.image : null,
                 Email: action.payload.Email,
                 assignedTo: action.payload.assignedTo,
                 idUser: action.payload.id,
@@ -53,9 +61,11 @@ export default function UserReducers(state = INITIAL_STATE, action) {
                 Nome: action.payload.Nome,
                 genre: action.payload.genre,
                 Email: action.payload.Email,
+                image: action.payload.image ? action.payload.image : null,
                 assignedTo: action.payload.assignedTo,
                 idUser: action.payload.id,
                 token: action.payload.token,
+                tokenFacebook: action.payload.tokenFacebook ? action.payload.tokenFacebook : null,
                 loading: false,
                 message: action.payload.message,
             }
@@ -70,7 +80,8 @@ export default function UserReducers(state = INITIAL_STATE, action) {
         case 'ERROR_USER': {
             return {
                 ...state,
-                message: action.payload.message
+                error: true,
+                message: 'Algo aconteceu, tente novamente mais tarde.'
             }
         }
         default: {

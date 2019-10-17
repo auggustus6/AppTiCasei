@@ -1,5 +1,6 @@
 import { navService } from '~/services/index';
 import { all, put, takeLatest, call } from 'redux-saga/effects';
+import { Alert } from 'react-native';
 
 import api from '~/services/api';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -74,7 +75,7 @@ function* postComment(action) {
         idImage: action.payload.idImage,
         comment: action.payload.comment.comment,
         author: action.payload.comment.author,
-        genre:action.payload.comment.genre
+        genre: action.payload.comment.genre
       }
     })
 
@@ -108,19 +109,17 @@ function* createUser(action) {
       type: 'CREATE_USER',
       payload: {
         Nome: response.data.Nome,
+        image: action.payload.user.Image,
         genre: response.data.genre,
         Email: response.data.Email,
         token: response.data.token,
         id: response.data.id,
       }
     })
-
     yield call(storagedToken, response.data.token);
     yield call(storagedUser, JSON.stringify(response.data));
-    yield put(navService.navigate('Home', {
-      user: response.data
-    }))
-
+    yield put(navService.navigate('Home', { user: response.data }));
+    
   } catch (error) {
     console.log(error);
   }

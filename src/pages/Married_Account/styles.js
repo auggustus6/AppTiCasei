@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
 
+export const ContainerScroll = styled.ScrollView``;
+
 export const Container = styled.View`
     flex:1;
     align-items:center;
@@ -7,10 +9,8 @@ export const Container = styled.View`
     padding:20px;
 `;
 
-
 export const Form = styled.View`
     align-self:stretch;
-    
 `;
 
 export const TitleForm = styled.Text`
@@ -29,11 +29,16 @@ export const InputForms = styled.TextInput`
 `;
 
 export const FormGroup = styled.View.attrs({
-    borderBottomColor: '#3333',
-    borderBottomWidth: 2,
-})``
+})`
+    background:#E8E8E8;
+    border-radius:100px;
+    margin:10px 0px;
+    justify-content:center;
+`
 
-export const Select = styled.Picker``
+export const Select = styled.Picker`
+    color:#979797;
+`;
 
 export const ButtonSubmit = styled.TouchableOpacity`
     background:#672F9E;

@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
 
+export const ContainerScroll = styled.ScrollView``;
+
 export const Container = styled.View`
     flex:1;
     align-items:center;
@@ -7,10 +9,8 @@ export const Container = styled.View`
     padding:20px;
 `;
 
-
 export const Form = styled.View`
     align-self:stretch;
-    
 `;
 
 export const TitleForm = styled.Text`

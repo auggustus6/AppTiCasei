@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { TouchableOpacity as Button, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
+import {
+    LoginButton, LoginManager
+} from 'react-native-fbsdk';
+
 
 import { loggedAccount } from '~/store/actions/userAction';
 
@@ -30,21 +34,20 @@ function Married_Configs({ navigation }) {
     });
 
     handleLogout = async () => {
-        dispatch({
-            type: 'LOGOUT_USER'
-        })
-        await AsyncStorage.multiRemove(['@token', '@userLogged', '@tokenFacebook'])
+        dispatch({ type: 'LOGOUT_USER' });
+        await AsyncStorage.multiRemove(['@token', '@userLogged', '@tokenFacebook']);
+        LoginManager.logOut();
         navigation.navigate('Main');
     }
-
 
     handleAccount = () => dispatch(loggedAccount(account));
 
     return (
 
         <Container>
-            <ContainerImage>
-                <Icon name="image" size={140} color="#eee" />
+            <ContainerImage source={{ uri: userLogged.image ? userLogged.image : null }}>
+                {!userLogged.image && <Icon name="image" size={140} color="#eee" />}
+
                 <ButtonChangeImage>
                     <Icon name="upload-cloud" size={20} color="#fff" />
                 </ButtonChangeImage>
@@ -79,6 +82,8 @@ function Married_Configs({ navigation }) {
                 <Button style={{ marginVertical: 20 }} onPress={handleLogout}>
                     <Text style={{ textAlign: 'center' }}>Sair</Text>
                 </Button>
+
+
 
             </Form>
 

@@ -24,7 +24,7 @@ import {
 
 function Main({ navigation }) {
   const dispatch = useDispatch();
-  const [code, setCode] = useState(0);
+  const [code, setCode] = useState('');
 
   useEffect(() => {
     hasCode();
@@ -33,6 +33,7 @@ function Main({ navigation }) {
 
   hasCode = async () => {
     const code = await AsyncStorage.getItem('@CodeMarried');
+    // const code = 'LauCar#kjhfze32wiqwor4w415q8j';
 
     if (code) {
       dispatch(async_getMarried(code));
@@ -59,6 +60,7 @@ function Main({ navigation }) {
           <InputChoice
             placeholder="INSIRA O CÓDIGO DO CASAMENTO"
             placeholderTextColor="#DBDBDB"
+            value={code}
             onChangeText={handleMarried} />
 
           <ButtonChoice onPress={handleChoiceMarried}>
