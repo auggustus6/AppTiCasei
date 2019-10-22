@@ -1,5 +1,6 @@
 import React from 'react';
-import { Dimensions } from 'react-native';
+import { useSelector } from 'react-redux';
+import { Dimensions, View } from 'react-native';
 
 const width = Dimensions.get('window').width;
 import {
@@ -16,6 +17,8 @@ import {
 import Icon from 'react-native-vector-icons/Feather';
 
 function Gifts() {
+    const married = useSelector(state => state.married);
+    console.log(married);
     return (
         <Container>
             <ContainerHeader>
@@ -29,11 +32,18 @@ function Gifts() {
 
             <ListGifts>
                 {
-                    [1, 2, 3, 4, 5, 6, 7, 8].map(image => {
+                    married.dataMarried.listGifts.map(gift => {
                         return (
-                            <CompanyGift key={image} style={{ width: width * 0.3 }}>
-                                <CompanyImage />
-                            </CompanyGift>
+                            <View key={gift._id} style={{
+                                width: width * 0.3, borderColor: "#ddd",
+                                height:100,
+                                marginRight:10,
+                                borderWidth: 1
+                            }}>
+                                <CompanyGift>
+                                    <CompanyImage source={{ uri: gift.logo }} />
+                                </CompanyGift>
+                            </View>
                         )
                     })
                 }
@@ -48,7 +58,7 @@ Gifts.navigationOptions = () => {
     return {
         title: 'Lista de Presentes',
         drawerIcon: ({ tintColor }) => (
-                <Icon name="gift" color={tintColor} size={18} />
+            <Icon name="gift" color={tintColor} size={18} />
         ),
         iconContainerStyle: {
             opacity: 1

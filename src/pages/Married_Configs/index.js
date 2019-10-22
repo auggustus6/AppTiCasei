@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableOpacity as Button, Text, View } from 'react-native';
+import { TouchableOpacity as Button, Text, View, Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -7,7 +7,7 @@ import {
 } from 'react-native-fbsdk';
 
 
-import { loggedAccount } from '~/store/actions/userAction';
+import { loggedAccount, updateUser } from '~/store/actions/userAction';
 
 import {
     Container,
@@ -23,14 +23,20 @@ import Follows from './Follows';
 import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-community/async-storage';
 
+import ImagePicker from 'react-native-image-picker';
+import ImageResizer from 'react-native-image-resizer';
+import api from '~/services/api';
+// const RNFS = require('react-native-fs');
 
 
 function Married_Configs({ navigation }) {
     const dispatch = useDispatch();
     const userLogged = useSelector(state => state.user);
+
     const [account, setAccount] = useState({
-        Email: '',
-        Password: ''
+        Email: userLogged.Email,
+        Nome: userLogged.Nome,
+        idUser: userLogged.idUser
     });
 
     handleLogout = async () => {
@@ -40,7 +46,43 @@ function Married_Configs({ navigation }) {
         navigation.navigate('Main');
     }
 
-    handleAccount = () => dispatch(loggedAccount(account));
+    handleAccount = () => dispatch(updateUser(account));
+
+    handleImage = () => {
+
+        const optionsImage = {
+            title: 'Selecionar Imagens',
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        };
+
+        ImagePicker.showImagePicker(optionsImage, async (response) => {
+          
+            if (response.didCancel) {
+                alert('User cancelled image picker');
+            } else if (response.error) {
+                alert('ImagePicker Error: ', response.error);
+            } else {
+                // const imageResizer = await ImageResizer.createResizedImage(response.uri, 350, 350, 'JPEG', 100)
+                const data = new FormData();
+
+                data.append('image', {
+                    filename: response.fileName,
+                    type: response.type,
+                    path: response.path,
+                    uri: Platform.OS === "android" ? response.uri : response.uri.replace("file://", "")
+                })
+
+                const dataEnd = {
+                    idUser: account.idUser,
+                    data
+                }
+                dispatch(updateUser(dataEnd));
+            };
+        })
+    }
 
     return (
 
@@ -48,7 +90,7 @@ function Married_Configs({ navigation }) {
             <ContainerImage source={{ uri: userLogged.image ? userLogged.image : null }}>
                 {!userLogged.image && <Icon name="image" size={140} color="#eee" />}
 
-                <ButtonChangeImage>
+                <ButtonChangeImage onPress={handleImage}>
                     <Icon name="upload-cloud" size={20} color="#fff" />
                 </ButtonChangeImage>
             </ContainerImage>
@@ -59,13 +101,14 @@ function Married_Configs({ navigation }) {
 
                 <InputForms
                     placeholder="Nome completo"
-                    value={userLogged.Nome}
+                    value={account.Nome}
                     placeholderTextColor="#B6B3B3"
-                    underlineColorAndroid="transparent" />
+                    underlineColorAndroid="transparent"
+                    onChangeText={Nome => setAccount({ ...account, Nome })} />
 
                 <InputForms
                     placeholder="E-mail de acesso"
-                    value={userLogged.Email}
+                    value={account.Email}
                     editable={false}
                     placeholderTextColor="#B6B3B3"
                     underlineColorAndroid="transparent"

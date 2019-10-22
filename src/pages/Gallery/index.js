@@ -30,11 +30,13 @@ import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { async_postComment } from '~/store/actions/marriedAction';
+import api from '~/services/api';
 const width = Dimensions.get('window').width;
 
 function Gallery() {
     const dispatch = useDispatch();
     const married = useSelector(state => state.married);
+    console.log(married);
     const userLogged = useSelector(state => state.user);
 
     const [comment, setComment] = useState({
@@ -42,6 +44,41 @@ function Gallery() {
         genre: userLogged.genre,
         comment: ''
     })
+
+    handleLike = async (idImage) => {
+        const idMarried = await AsyncStorage.getItem('@idMarried');
+        await api.post(`married/${idMarried}/${idImage}/like`);
+    }
+
+    showLikes = (likes) => {
+        if (likes.length) {
+            const [userLikes] = likes.filter((user, index) => {
+                if (user === userLogged.idUser) return user
+            })
+
+            if (userLikes === userLogged.idUser) {
+                return (
+                    <View>
+                        <Icon name="heart" size={18} color='#f1003b' />
+                    </View>
+                )
+            } else {
+                return (
+                    <View>
+                        <Icon name="heart" size={18} color='#333' />
+                    </View>
+                )
+            }
+        }
+        else {
+            return (
+                <View>
+                    <Icon name="heart" size={18} color='#333' />
+                </View>
+            )
+        }
+
+    }
 
 
 
@@ -76,11 +113,15 @@ function Gallery() {
                             }
                         })}
 
+                        <CardActions>
+                            <Button onPress={() => handleLike(feed._id)}>
+                                {showLikes(feed.likes)}
+                            </Button>
+                        </CardActions>
+
                         <Description>{feed.description}</Description>
 
                         <CardFooter>
-                            <CardActions></CardActions>
-
                             {
                                 feed.commentaries.map(comment => {
                                     return (
@@ -108,7 +149,7 @@ function Gallery() {
                                             placeholderTextColor="#ddd"
                                             underlineColorAndroid="transparent"
                                             value={comment.comment}
-                                            onChangeText={(text) => setComment({ author: userLogged.Nome, comment: text, genre:userLogged.genre })}
+                                            onChangeText={(text) => setComment({ author: userLogged.Nome, comment: text, genre: userLogged.genre })}
                                         />
                                         <Button onPress={() => submitPost(feed._id)}>
                                             <Icon name="navigation" size={22} color="#333" />

@@ -35,11 +35,12 @@ export default function UserReducers(state = INITIAL_STATE, action) {
                 Email: action.payload.Email,
                 token: action.payload.token,
                 idUser: action.payload.id,
+                idFacebook: action.payload.idFacebook,
                 message: action.payload.message
             }
 
         case 'AUTH_LOGGED': {
-
+   
             return {
                 ...state,
                 Nome: action.payload.Nome,
@@ -48,9 +49,18 @@ export default function UserReducers(state = INITIAL_STATE, action) {
                 Email: action.payload.Email,
                 assignedTo: action.payload.assignedTo,
                 idUser: action.payload.id,
+                idFacebook: action.payload.idFacebook,
                 token: action.payload.token,
                 loading: false,
                 message: action.payload.message,
+            }
+        }
+
+        case 'UPDATE_USER': {
+
+            return {
+                ...state,
+                ...action.payload
             }
         }
 
@@ -64,6 +74,8 @@ export default function UserReducers(state = INITIAL_STATE, action) {
                 image: action.payload.image ? action.payload.image : null,
                 assignedTo: action.payload.assignedTo,
                 idUser: action.payload.id,
+                idFacebook: action.payload.idFacebook,
+                type:action.payload.type,
                 token: action.payload.token,
                 tokenFacebook: action.payload.tokenFacebook ? action.payload.tokenFacebook : null,
                 loading: false,

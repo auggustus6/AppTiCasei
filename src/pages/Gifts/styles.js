@@ -23,10 +23,15 @@ export const ListGifts = styled.View`
     flex:1;
 `;
 export const CompanyGift = styled.TouchableOpacity`
-    margin:5px 0px;
-    margin-right:5px;
     height:100px;
-    background:#ddd;
+    width:100px;
     border-radius:10px;
 `;
-export const CompanyImage = styled.Image``;
+export const CompanyImage = styled.Image.attrs({
+    resizeMode:'contain',
+    alignSelf: 'center',
+    justifyContent: 'center',
+})`
+    width:100%;
+    height:100%;
+`;

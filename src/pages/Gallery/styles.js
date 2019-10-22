@@ -37,10 +37,18 @@ export const Description = styled.Text`
     padding:10px;
 `;
 
+export const CardActions = styled.View`
+    padding-top:10px;
+    padding-left:10px;
+    flex-direction:row;
+    align-items:center;
+    margin-right:10px;
+`;
+
 export const CardFooter = styled.View`
     padding:10px;
 `;
-export const CardActions = styled.View``;
+
 export const CardComments = styled.View`
     flex-direction:row;
     align-items:center;

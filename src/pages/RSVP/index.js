@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import {
     Container,
@@ -13,12 +14,23 @@ import {
     ButtonSubmit,
     TextButton
 } from './styles';
+import api from '~/services/api';
 
 
 function RSVP() {
+    const married = useSelector(state => state.married);
+    const [form, setForm] = useState({
+        guest: '',
+        phoneNumber: null,
+        presence: true,
+        adults: 1
+    })
 
 
-    handlePresence = () => console.log('Marcar Presença');
+    handlePresence = async() => {
+        const res = await api.post(`married/${married.dataMarried.id}/confirmPresence`, form);
+        console.log(res.data);
+    }
 
     return (
         <Container>
@@ -39,7 +51,8 @@ function RSVP() {
                     <Label>Nome do convidado (igual ao convite) </Label>
                     <InputText
                         placeholderTextColor="#333"
-                        value="Carlos Augusto"
+                        onChangeText={guest => setForm({ ...form, guest })}
+                        value={form.guest}
                         underlineColorAndroid='transparent'
                     />
                 </FormGroup>
@@ -50,7 +63,8 @@ function RSVP() {
                     <Label>Telefone para contato</Label>
                     <InputText
                         placeholderTextColor="#333"
-                        value="17 98191-4239"
+                        onChangeText={phoneNumber => setForm({ ...form, phoneNumber })}
+                        value={form.phoneNumber}
                         underlineColorAndroid='transparent'
                     />
                 </FormGroup>
@@ -60,8 +74,10 @@ function RSVP() {
                         select={true}>
                         <Label>Você irá ao evento</Label>
                         <Select
-                            selectedValue='Evento'
-                            onValueChange={(item, itemIndex) => { }}>
+                            selectedValue='Sim'
+                            onValueChange={(item, itemIndex) => {
+                                setForm({ ...form, presence: item })
+                            }}>
                             <Select.Item label="Sim" value="Sim" />
                             <Select.Item label="Não" value="Não" />
                         </Select>
@@ -71,8 +87,10 @@ function RSVP() {
                         select={true}>
                         <Label>Quantos adultos?</Label>
                         <Select
-                            selectedValue='Adultos'
-                            onValueChange={(item, itemIndex) => { }}>
+                            selectedValue='1'
+                            onValueChange={(item, itemIndex) => {
+                                setForm({ ...form, adults: item })
+                            }}>
                             <Select.Item label="1" value="1" />
                             <Select.Item label="2" value="2" />
                             <Select.Item label="3" value="3" />
@@ -87,7 +105,7 @@ function RSVP() {
                 </ButtonSubmit>
 
             </FormContainer>
-        </Container>
+        </Container >
     );
 }
 

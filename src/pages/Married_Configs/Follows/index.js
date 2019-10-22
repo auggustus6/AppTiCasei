@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import {
     ContainerFollows,
@@ -12,13 +13,13 @@ import {
 
 
 function Follows() {
-
+    const userLogged = useSelector(state => state.user);
     return (
         <ContainerFollows>
             <TitleForm>Estou Acompanhando</TitleForm>
             <ListFollows>
                 {
-                    [1, 2, 3, 4, 5].map(follow => {
+                    userLogged.followMarrieds.map(follow => {
                         return (
                             <FollowView key={follow}>
                                 <Follow>Carlos e Laura</Follow>

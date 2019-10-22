@@ -93,6 +93,12 @@ async function callUserCreate(action) {
   return response;
 }
 
+async function callUpdateUser(action) {
+  const { idUser, ...user } = action.payload.user;
+  const response = await api.put(`user/update/${idUser}`, user)
+  return response;
+}
+
 async function callLoggedUser(action) {
   const { Email, Password } = action.payload.user;
 
@@ -119,7 +125,28 @@ function* createUser(action) {
     yield call(storagedToken, response.data.token);
     yield call(storagedUser, JSON.stringify(response.data));
     yield put(navService.navigate('Home', { user: response.data }));
-    
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function* updateUser(action) {
+
+  try {
+    const response = yield call(callUpdateUser, action)
+
+    yield put({
+      type: 'UPDATE_USER',
+      payload: {
+        ...response.data,
+        image: response.data.image_url
+      }
+    })
+
+    yield call(storagedUser, JSON.stringify({ ...response.data, image: response.data.image_url }));
+    yield put(navService.navigate('Home', { user: response.data }));
+
   } catch (error) {
     console.log(error);
   }
@@ -137,6 +164,7 @@ function* loggedUser(action) {
         Nome: response.data.Nome,
         genre: response.data.genre,
         Email: response.data.Email,
+        image: response.data.Image ? response.data.Image : null,
         id: response.data.id,
         assignedTo: response.data.assignedTo,
         token: response.data.token
@@ -158,6 +186,7 @@ export default function* rootSaga() {
   yield all([
     takeLatest('ASYNC_CREATE_ACCOUNT', createUser),
     takeLatest('ASYNC_LOGGED_USER', loggedUser),
+    takeLatest('ASYNC_UPDATE_USER', updateUser),
 
     takeLatest('ASYNC_GET_MARRIED', requestMarried),
     takeLatest('ASYNC_POST_COMMENT', postComment)
