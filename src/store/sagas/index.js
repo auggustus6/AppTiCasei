@@ -53,6 +53,29 @@ function* requestMarried(action) {
   }
 }
 
+// ADD LIKE IMAGE
+async function callLikes(action) {
+  const { idImage, idMarried } = action.payload;
+
+  const response = await api.post(`married/${idMarried}/${idImage}/like`);
+  return response;
+}
+
+function* likeImage(action) {
+  yield put({ type: 'REQUEST_MARRIED' })
+
+  try {
+    const resp = yield call(callLikes, action);
+
+    yield put({
+      type: 'LIKE_IMAGE', payload: resp.data
+    })
+
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 // ADD POST CASAMENTO
 async function callComment(action) {
 
@@ -94,8 +117,18 @@ async function callUserCreate(action) {
 }
 
 async function callUpdateUser(action) {
-  const { idUser, ...user } = action.payload.user;
-  const response = await api.put(`user/update/${idUser}`, user)
+  const { idUser, archive, ...user } = action.payload.user;
+  let response;
+  if (archive) {
+    let config = { headers: { 'Content-Type': 'multipart/form-data' } }
+    const data = new FormData();
+    data.append('image', user.data.image)
+
+    response = await api.put(`user/updateImage/${idUser}`, data, config)
+  } else {
+    response = await api.put(`user/update/${idUser}`, user)
+
+  }
   return response;
 }
 
@@ -114,6 +147,7 @@ function* createUser(action) {
     yield put({
       type: 'CREATE_USER',
       payload: {
+        followMarrieds: response.data.followMarrieds,
         Nome: response.data.Nome,
         image: action.payload.user.Image,
         genre: response.data.genre,
@@ -161,6 +195,7 @@ function* loggedUser(action) {
     yield put({
       type: 'AUTH_LOGGED',
       payload: {
+        followMarrieds: response.data.followMarrieds,
         Nome: response.data.Nome,
         genre: response.data.genre,
         Email: response.data.Email,
@@ -187,6 +222,7 @@ export default function* rootSaga() {
     takeLatest('ASYNC_CREATE_ACCOUNT', createUser),
     takeLatest('ASYNC_LOGGED_USER', loggedUser),
     takeLatest('ASYNC_UPDATE_USER', updateUser),
+    takeLatest('ASYNC_LIKE_IMAGE', likeImage),
 
     takeLatest('ASYNC_GET_MARRIED', requestMarried),
     takeLatest('ASYNC_POST_COMMENT', postComment)

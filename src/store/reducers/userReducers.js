@@ -4,7 +4,7 @@ const INITIAL_STATE = {
     genre: '',
     Email: '',
     type: '',
-    Password: '',
+    followMarrieds:[],
     image:'',
     token: null,
     tokenFacebook: null,
@@ -13,6 +13,7 @@ const INITIAL_STATE = {
     loading: false,
     error: false,
     message: ''
+    // Password: '',
 }
 
 export default function UserReducers(state = INITIAL_STATE, action) {
@@ -28,6 +29,7 @@ export default function UserReducers(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 loading: false,
+                followMarrieds: action.payload.followMarrieds,
                 Nome: action.payload.Nome,
                 type: action.payload.type,
                 image: action.payload.image ? action.payload.image : null,
@@ -44,6 +46,7 @@ export default function UserReducers(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 Nome: action.payload.Nome,
+                followMarrieds: action.payload.followMarrieds,
                 genre: action.payload.genre,
                 image: action.payload.image ? action.payload.image : null,
                 Email: action.payload.Email,
@@ -68,6 +71,7 @@ export default function UserReducers(state = INITIAL_STATE, action) {
         case 'LOGGED_USER': {
             return {
                 ...state,
+                followMarrieds: action.payload.followMarrieds,
                 Nome: action.payload.Nome,
                 genre: action.payload.genre,
                 Email: action.payload.Email,

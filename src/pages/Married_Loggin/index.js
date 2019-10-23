@@ -45,7 +45,6 @@ function Married_Login({ navigation }) {
       console.log(error)
     }
     else {
-      console.log(result);
       dispatch(createAccount({
         id: result.id,
         Nome: result.name,

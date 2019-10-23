@@ -2,12 +2,9 @@ import React, { useState } from 'react';
 import { TouchableOpacity as Button, Text, View, Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-    LoginButton, LoginManager
-} from 'react-native-fbsdk';
+import { LoginManager } from 'react-native-fbsdk';
 
-
-import { loggedAccount, updateUser } from '~/store/actions/userAction';
+import { updateUser } from '~/store/actions/userAction';
 
 import {
     Container,
@@ -25,7 +22,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
-import api from '~/services/api';
+
 // const RNFS = require('react-native-fs');
 
 
@@ -59,23 +56,26 @@ function Married_Configs({ navigation }) {
         };
 
         ImagePicker.showImagePicker(optionsImage, async (response) => {
-          
+
             if (response.didCancel) {
                 alert('User cancelled image picker');
             } else if (response.error) {
                 alert('ImagePicker Error: ', response.error);
             } else {
                 // const imageResizer = await ImageResizer.createResizedImage(response.uri, 350, 350, 'JPEG', 100)
-                const data = new FormData();
 
-                data.append('image', {
+              let data = {};
+
+                data.image = {
                     filename: response.fileName,
                     type: response.type,
                     path: response.path,
                     uri: Platform.OS === "android" ? response.uri : response.uri.replace("file://", "")
-                })
+                }
+
 
                 const dataEnd = {
+                    archive: true,
                     idUser: account.idUser,
                     data
                 }

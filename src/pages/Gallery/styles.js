@@ -45,6 +45,7 @@ export const CardActions = styled.View`
     margin-right:10px;
 `;
 
+
 export const CardFooter = styled.View`
     padding:10px;
 `;

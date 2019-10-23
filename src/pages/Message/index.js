@@ -57,9 +57,7 @@ Message.navigationOptions = (navigation) => {
     return {
         title:'Mensagens',
         drawerIcon: ({ tintColor }) => (
-     
                 <Icon name="send" color={tintColor} size={18} />
-       
         ),
         iconContainerStyle: {
             opacity: 1

@@ -2,7 +2,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const api = axios.create({
-  baseURL: 'http://08b57443.ngrok.io/',
+  baseURL: 'http://762f3461.ngrok.io/',
 });
 
 
@@ -19,7 +19,6 @@ api.interceptors.request.use(
 
 getToken = async() => {
   const token = await AsyncStorage.getItem('@token');
-  console.log(token);
   if(token === null){
     return;
   }

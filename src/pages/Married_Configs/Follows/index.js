@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import {
     ContainerFollows,
@@ -10,20 +10,30 @@ import {
     FollowButton,
     FollowText
 } from './styles';
+import { async_getMarried } from '~/store/actions/marriedAction';
 
 
 function Follows() {
     const userLogged = useSelector(state => state.user);
+    const dispatch = useDispatch();
+
+    
+
+    handleMarried = async(code) => {
+        dispatch(async_getMarried(code))    
+    }
+
     return (
         <ContainerFollows>
             <TitleForm>Estou Acompanhando</TitleForm>
             <ListFollows>
                 {
+                    userLogged.followMarrieds &&
                     userLogged.followMarrieds.map(follow => {
                         return (
-                            <FollowView key={follow}>
-                                <Follow>Carlos e Laura</Follow>
-                                <FollowButton>
+                            <FollowView key={follow._id}>
+                                <Follow>{follow.title}</Follow>
+                                <FollowButton onPress={() => handleMarried(follow.uniqueCode)}>
                                     <FollowText>Visualizar</FollowText>
                                 </FollowButton>
                             </FollowView>

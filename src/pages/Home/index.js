@@ -43,8 +43,7 @@ function Home(props) {
         const user = JSON.parse(userAsync);
         const tokenFacebook = await AsyncStorage.getItem('@tokenFacebook');
         const token = await AsyncStorage.getItem('@token');
-
-        console.log(user);
+        
         if (user && token && !tokenFacebook) {
             dispatch({
                 type: 'LOGGED_USER',

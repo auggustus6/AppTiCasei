@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Dimensions } from 'react-native';
 import {
-  LoginButton, 
-  AccessToken, 
+  LoginButton,
+  AccessToken,
   GraphRequest,
   GraphRequestManager
 } from 'react-native-fbsdk';
@@ -146,7 +146,6 @@ function Married_Account({ navigation }) {
           <ButtonSubmit onPress={handleAccount}>
             <TextButton>CRIAR CONTA</TextButton>
           </ButtonSubmit>
-
 
         </Form>
 

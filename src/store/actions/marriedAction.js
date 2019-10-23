@@ -17,3 +17,13 @@ export function async_postComment(idMarried, idImage, comment) {
         }
     }
 }
+
+export function async_like_image(idMarried, idImage) {
+    return {
+        type: 'ASYNC_LIKE_IMAGE',
+        payload: {
+            idMarried,
+            idImage
+        }
+    }
+}

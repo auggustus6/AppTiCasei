@@ -53,6 +53,20 @@ export default function MarriedReducers(state = INITIAL_STATE, action) {
                 }
             }
 
+            case 'LIKE_IMAGE':
+                const response = action.payload;
+                    return {
+                        ...state,
+                        dataMarried: {
+                            ...state.dataMarried, gallery: state.dataMarried.gallery.map(galeria => {
+                                if (galeria._id === response[0]._id) {
+                                    galeria.likes = [...response[0].likes]
+                                }
+                                return galeria;
+                            })
+                        }
+                    }   
+
 
 
         default:

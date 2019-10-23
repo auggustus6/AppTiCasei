@@ -28,8 +28,7 @@ function RSVP() {
 
 
     handlePresence = async() => {
-        const res = await api.post(`married/${married.dataMarried.id}/confirmPresence`, form);
-        console.log(res.data);
+       await api.post(`married/${married.dataMarried.id}/confirmPresence`, form);
     }
 
     return (

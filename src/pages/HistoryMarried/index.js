@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { View } from 'react-native';
 
 import {
     Container,
@@ -18,15 +17,19 @@ function HistoryMarried() {
     const married = useSelector(state => state.married);
     return (
         <Container>
-            <ContainerImage source={{ uri: married.dataMarried.banner_url }}></ContainerImage>
+            <ContainerImage 
+                source={{ uri: married.dataMarried.banner_url }}>
+            </ContainerImage>
 
             <TitleMarried>{married.dataMarried.title}</TitleMarried>
 
             <Description>
-                {married.dataMarried.annotations}
+                { married.dataMarried.annotations }
             </Description>
 
-            <ContainerGallerys horizontal={true} showsHorizontalScrollIndicator={false}>
+            <ContainerGallerys 
+                horizontal={true} 
+                showsHorizontalScrollIndicator={false}>
             
                 {
                     married.dataMarried.gallery_url.map((img, index) => {

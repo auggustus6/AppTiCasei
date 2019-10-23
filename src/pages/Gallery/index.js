@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Dimensions, TouchableOpacity as Button } from 'react-native';
+import { View, Dimensions, TouchableOpacity as Button, Alert } from 'react-native';
+import Share from 'react-native-share';
 
 import {
     Container,
@@ -29,25 +30,41 @@ import avatarGirl from '~/assets/images/avatarGirl.png'
 import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import { async_postComment } from '~/store/actions/marriedAction';
-import api from '~/services/api';
+import { async_postComment, async_like_image } from '~/store/actions/marriedAction';
 const width = Dimensions.get('window').width;
 
 function Gallery() {
     const dispatch = useDispatch();
     const married = useSelector(state => state.married);
-    console.log(married);
     const userLogged = useSelector(state => state.user);
 
     const [comment, setComment] = useState({
         author: '',
+        comment: '',
         genre: userLogged.genre,
-        comment: ''
     })
 
     handleLike = async (idImage) => {
-        const idMarried = await AsyncStorage.getItem('@idMarried');
-        await api.post(`married/${idMarried}/${idImage}/like`);
+        if (userLogged.idUser !== null) {
+            const idMarried = await AsyncStorage.getItem('@idMarried')
+            dispatch(async_like_image(idMarried, idImage))
+        } else {
+            alert('Você precisa estar logado, para curtir uma imagem.');
+        }
+    }
+
+    handleShared = async (galeria) => {
+        try {
+            const [findImage] = married.dataMarried.gallery_url.filter(url => url._id === galeria._id);
+            const shareOptions = {
+                title: married.dataMarried.title,
+                message: galeria.description,
+                url: findImage.label
+            };
+            await Share.open(shareOptions);
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     showLikes = (likes) => {
@@ -59,13 +76,13 @@ function Gallery() {
             if (userLikes === userLogged.idUser) {
                 return (
                     <View>
-                        <Icon name="heart" size={18} color='#f1003b' />
+                        <Icon name="heart" size={24} color='#f1003b' />
                     </View>
                 )
             } else {
                 return (
                     <View>
-                        <Icon name="heart" size={18} color='#333' />
+                        <Icon name="heart" size={24} color='#999' />
                     </View>
                 )
             }
@@ -73,14 +90,11 @@ function Gallery() {
         else {
             return (
                 <View>
-                    <Icon name="heart" size={18} color='#333' />
+                    <Icon name="heart" size={24} color='#999' />
                 </View>
             )
         }
-
     }
-
-
 
     submitPost = async (idImage) => {
         if (comment.comment !== '') {
@@ -114,8 +128,12 @@ function Gallery() {
                         })}
 
                         <CardActions>
-                            <Button onPress={() => handleLike(feed._id)}>
+                            <Button onPress={() => handleLike(feed._id)} style={{ marginRight: 10 }}>
                                 {showLikes(feed.likes)}
+                            </Button>
+
+                            <Button onPress={() => handleShared(feed)}>
+                                <Icon name="share" size={24} color='#999' />
                             </Button>
                         </CardActions>
 

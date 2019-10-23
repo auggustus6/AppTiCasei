@@ -16,6 +16,9 @@ export function updateUser(user) {
     }
 }
 
+
+
+
 export function loggedAccount(user) {
     return {
         type: 'ASYNC_LOGGED_USER',
