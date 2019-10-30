@@ -24,7 +24,7 @@ import {
 
 function Main({ navigation }) {
   const dispatch = useDispatch();
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState('LauCar#kjhfze32wiqwor4w415q8j');
 
   useEffect(() => {
     hasCode();
@@ -33,8 +33,7 @@ function Main({ navigation }) {
 
   hasCode = async () => {
     const code = await AsyncStorage.getItem('@CodeMarried');
-    // const code = 'LauCar#kjhfze32wiqwor4w415q8j';
-
+    
     if (code) {
       dispatch(async_getMarried(code));
     }

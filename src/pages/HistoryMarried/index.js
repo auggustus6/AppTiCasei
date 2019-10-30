@@ -17,22 +17,22 @@ function HistoryMarried() {
     const married = useSelector(state => state.married);
     return (
         <Container>
-            <ContainerImage 
+            <ContainerImage
                 source={{ uri: married.dataMarried.banner_url }}>
             </ContainerImage>
 
             <TitleMarried>{married.dataMarried.title}</TitleMarried>
 
             <Description>
-                { married.dataMarried.annotations }
+                {married.dataMarried.annotations}
             </Description>
 
-            <ContainerGallerys 
-                horizontal={true} 
+            <ContainerGallerys
+                horizontal={true}
                 showsHorizontalScrollIndicator={false}>
-            
+
                 {
-                    married.dataMarried.gallery_url.map((img, index) => {
+                    married.dataMarried.gallery_url.map((img) => {
                         return (
                             <ClickImage key={img._id}>
                                 <Image source={{ uri: img.label }} />
@@ -46,7 +46,7 @@ function HistoryMarried() {
     );
 }
 
-HistoryMarried.navigationOptions = (navigation) => {
+HistoryMarried.navigationOptions = ({ navigation }) => {
     return {
         title: 'Nossa História',
         drawerIcon: ({ tintColor }) => (

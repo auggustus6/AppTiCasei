@@ -109,6 +109,13 @@ function* postComment(action) {
 }
 
 
+async function followMarriedUser(action) {
+  const { idMarried } = action.payload;
+
+  const response = await api.post(`married/${idMarried}/followMarried`, null)
+  return response;
+}
+
 async function callUserCreate(action) {
   const { Email, Password, Nome, genre, type } = action.payload.user;
 
@@ -120,14 +127,9 @@ async function callUpdateUser(action) {
   const { idUser, archive, ...user } = action.payload.user;
   let response;
   if (archive) {
-    let config = { headers: { 'Content-Type': 'multipart/form-data' } }
-    const data = new FormData();
-    data.append('image', user.data.image)
 
-    response = await api.put(`user/updateImage/${idUser}`, data, config)
   } else {
     response = await api.put(`user/update/${idUser}`, user)
-
   }
   return response;
 }
@@ -138,6 +140,25 @@ async function callLoggedUser(action) {
   const response = await api.post('account/authenticate', { Email, Password })
   return response;
 }
+
+function* followMarried(action) {
+
+  try {
+    const response = yield call(followMarriedUser, action)
+
+    yield put({
+      type: 'FOLLOW_MARRIED',
+      payload: response.data,
+    })
+
+    yield call(storagedUser, JSON.stringify(response.data));
+
+  } catch (err) {
+    console.log(err);
+  }
+
+}
+
 
 function* createUser(action) {
 
@@ -169,6 +190,7 @@ function* updateUser(action) {
 
   try {
     const response = yield call(callUpdateUser, action)
+    console.log(response);
 
     yield put({
       type: 'UPDATE_USER',
@@ -223,6 +245,7 @@ export default function* rootSaga() {
     takeLatest('ASYNC_LOGGED_USER', loggedUser),
     takeLatest('ASYNC_UPDATE_USER', updateUser),
     takeLatest('ASYNC_LIKE_IMAGE', likeImage),
+    takeLatest('ASYNC_FOLLOW_MARRIED', followMarried),
 
     takeLatest('ASYNC_GET_MARRIED', requestMarried),
     takeLatest('ASYNC_POST_COMMENT', postComment)

@@ -70,9 +70,10 @@ export const optionsRoot = {
                 </View>
             ),
 
-            headerRight: (
 
+            headerRight: (
                 <View style={{ width: 32, height: 32, backgroundColor: '#fff', alignItems: 'center', borderRadius: 20, padding: 5, borderColor: '#7F32CD', borderWidth: 2 }}>
+                    
                     {userParams &&
                         <Button onPress={() => navigation.navigate('Configuracoes')}>
                             <Icon name="user" color="#333" size={18} />

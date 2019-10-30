@@ -16,6 +16,13 @@ export function updateUser(user) {
     }
 }
 
+export function userfollowMarried(idMarried) {
+    return {
+        type: 'ASYNC_FOLLOW_MARRIED',
+        payload: { idMarried }
+    }
+}
+
 
 
 

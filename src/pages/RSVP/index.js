@@ -45,7 +45,6 @@ function RSVP() {
                     />
                 </FormGroup>
 
-
                 <FormGroup>
                     <Label>Nome do convidado (igual ao convite) </Label>
                     <InputText
@@ -55,8 +54,6 @@ function RSVP() {
                         underlineColorAndroid='transparent'
                     />
                 </FormGroup>
-
-
 
                 <FormGroup>
                     <Label>Telefone para contato</Label>
@@ -104,7 +101,7 @@ function RSVP() {
                 </ButtonSubmit>
 
             </FormContainer>
-        </Container >
+        </Container>
     );
 }
 

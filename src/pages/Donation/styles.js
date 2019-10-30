@@ -3,9 +3,12 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
     flex:1;
     padding:20px;
-    align-items:center;
-    justify-content:center;
+    justify-content:flex-end;
 `;
+
+export const ContainerScrollView = styled.ScrollView``;
+
+export const ContainerCard = styled.View``;
 
 export const Rules = styled.Text`
     margin:20px 0px;
@@ -25,6 +28,23 @@ export const ButtonSubmit = styled.TouchableOpacity`
 export const TextButton = styled.Text`
     color:#fff;
     text-align:center;
+`;
+
+export const FormCard = styled.View`
+   margin-top:20px;
+`;
+
+export const FormGroup = styled.View``;
+
+export const InputAmount = styled.TextInput.attrs({
+    borderRadius: 50,
+    borderWidth:1,
+    borderColor: '#ddd',
+})`
+    margin-bottom:10px;
+    font-size:14px;
+    background:#ddd;
+    padding:15px;
 `;
 
 

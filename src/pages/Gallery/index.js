@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Dimensions, TouchableOpacity as Button, Alert } from 'react-native';
+import { View, Dimensions, TouchableOpacity as Button } from 'react-native';
 import Share from 'react-native-share';
 
 import {
@@ -16,8 +16,6 @@ import {
     CardFooter,
     CardActions,
     CardComments,
-    ShowMore,
-    ShowText,
     Author,
     Avatar,
     Comment,

@@ -62,17 +62,14 @@ function Married_Configs({ navigation }) {
             } else if (response.error) {
                 alert('ImagePicker Error: ', response.error);
             } else {
-                // const imageResizer = await ImageResizer.createResizedImage(response.uri, 350, 350, 'JPEG', 100)
+                const imageResizer = await ImageResizer.createResizedImage(response.uri, 350, 350, 'JPEG', 100)
 
-              let data = {};
-
-                data.image = {
-                    filename: response.fileName,
+               let data = {
+                    filename: imageResizer.name,
                     type: response.type,
-                    path: response.path,
-                    uri: Platform.OS === "android" ? response.uri : response.uri.replace("file://", "")
+                    path: imageResizer.path,
+                    uri: Platform.OS === "android" ? imageResizer.uri : imageResizer.uri.replace("file://", "")
                 }
-
 
                 const dataEnd = {
                     archive: true,
@@ -94,8 +91,6 @@ function Married_Configs({ navigation }) {
                     <Icon name="upload-cloud" size={20} color="#fff" />
                 </ButtonChangeImage>
             </ContainerImage>
-
-
 
             <Form>
 
@@ -125,8 +120,6 @@ function Married_Configs({ navigation }) {
                 <Button style={{ marginVertical: 20 }} onPress={handleLogout}>
                     <Text style={{ textAlign: 'center' }}>Sair</Text>
                 </Button>
-
-
 
             </Form>
 

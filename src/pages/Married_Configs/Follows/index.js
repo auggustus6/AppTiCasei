@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
     ContainerFollows,
+    ContainerTitleFollows,
     TitleForm,
     ListFollows,
     FollowView,
@@ -11,21 +12,55 @@ import {
     FollowText
 } from './styles';
 import { async_getMarried } from '~/store/actions/marriedAction';
+import { userfollowMarried } from '~/store/actions/userAction'
+import { Switch } from 'react-native-gesture-handler';
+
+
 
 
 function Follows() {
     const userLogged = useSelector(state => state.user);
+    const married = useSelector(state => state.married);
     const dispatch = useDispatch();
+    const [followMarried, setFollow] = useState(false);
 
-    
+    useEffect(() => {
+        verifyUserIntoMarried();
+    }, [userLogged])
 
-    handleMarried = async(code) => {
-        dispatch(async_getMarried(code))    
+    handleFollow = () => {
+        dispatch(userfollowMarried(married.dataMarried.id));
+        if (followMarried) setFollow(false);
+        else setFollow(true);
+    }
+
+    handleMarried = (code) => {
+        dispatch(async_getMarried(code))
+
+    }
+
+    verifyUserIntoMarried = () => {
+        userLogged.followMarrieds.forEach(u => {
+            if (u.id === married.dataMarried.id) {
+                setFollow(true)
+            }
+            else {
+                setFollow(false)
+            }
+        })
     }
 
     return (
         <ContainerFollows>
-            <TitleForm>Estou Acompanhando</TitleForm>
+            <ContainerTitleFollows>
+                <TitleForm>Seguir</TitleForm>
+                <Switch
+                    // thumbColor="#672F9E"
+                    // trackColor={{false: '#ddd', true: '#672F9E'}}
+                    value={followMarried}
+                    onValueChange={handleFollow}
+                />
+            </ContainerTitleFollows>
             <ListFollows>
                 {
                     userLogged.followMarrieds &&

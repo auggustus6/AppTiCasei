@@ -2,7 +2,9 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const api = axios.create({
-  baseURL: 'http://762f3461.ngrok.io/',
+  baseURL: 'http://d47ba2fb.ngrok.io/',
+  // baseURL:'10.0.2.2:3333/'
+  // baseURL:'192.168.0.6:3333/'
 });
 
 

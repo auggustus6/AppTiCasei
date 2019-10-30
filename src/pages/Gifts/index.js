@@ -26,7 +26,6 @@ function Gifts() {
                 </>
                 <ContainerContent>
                     <Title>Confira  o local onde fizemos nossa lista de presentes.</Title>
-                    <SmallTitle>ou se preferir faça uma doação online.</SmallTitle>
                 </ContainerContent>
             </ContainerHeader>
 

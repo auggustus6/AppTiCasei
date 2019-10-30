@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Dimensions, StyleSheet, TouchableOpacity as Button, Alert } from 'react-native';
+import { View, Text, Dimensions, StyleSheet, TouchableOpacity as Button } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Feather';
 import Geolocation from '@react-native-community/geolocation';
@@ -33,7 +33,7 @@ function Location() {
 
   useEffect(() => {
     return () => {
-      if(observer){
+      if (observer) {
         Geolocation.stopObserving();
       }
     }
@@ -47,7 +47,7 @@ function Location() {
       setObserver(true);
     }, error => {
       setObserver(false);
-     })
+    })
   }
 
 

@@ -4,8 +4,8 @@ const INITIAL_STATE = {
     genre: '',
     Email: '',
     type: '',
-    followMarrieds:[],
-    image:'',
+    followMarrieds: [],
+    image: '',
     token: null,
     tokenFacebook: null,
     idUser: null,
@@ -42,7 +42,7 @@ export default function UserReducers(state = INITIAL_STATE, action) {
             }
 
         case 'AUTH_LOGGED': {
-   
+
             return {
                 ...state,
                 Nome: action.payload.Nome,
@@ -67,6 +67,13 @@ export default function UserReducers(state = INITIAL_STATE, action) {
             }
         }
 
+        case 'FOLLOW_MARRIED': {
+            return {
+                ...state,
+                followMarrieds: [...action.payload.followMarrieds]
+            }
+        }
+
 
         case 'LOGGED_USER': {
             return {
@@ -79,7 +86,7 @@ export default function UserReducers(state = INITIAL_STATE, action) {
                 assignedTo: action.payload.assignedTo,
                 idUser: action.payload.id,
                 idFacebook: action.payload.idFacebook,
-                type:action.payload.type,
+                type: action.payload.type,
                 token: action.payload.token,
                 tokenFacebook: action.payload.tokenFacebook ? action.payload.tokenFacebook : null,
                 loading: false,

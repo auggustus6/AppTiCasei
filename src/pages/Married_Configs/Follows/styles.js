@@ -3,6 +3,13 @@ import styled from 'styled-components/native';
 export const ContainerFollows = styled.View`
     padding:20px;
 `;
+
+export const ContainerTitleFollows = styled.View`
+    align-items:center;
+    justify-content:space-between
+    flex-direction:row;
+`;
+
 export const TitleForm = styled.Text`
     font-size:16px;
     font-weight:bold;
