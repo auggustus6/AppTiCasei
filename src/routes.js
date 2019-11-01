@@ -39,7 +39,7 @@ const RootScreen = createDrawerNavigator({
     Historia: HistoryMarried,
     Mensagens: Message,
     Presentes: Gifts,
-    Doacao: Donation,
+    Gravata: Donation,
     Galeria: Gallery,
     Evento:
         createMaterialTopTabNavigator({

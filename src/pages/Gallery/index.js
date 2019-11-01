@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Dimensions, TouchableOpacity as Button } from 'react-native';
+import { View, Dimensions, TouchableOpacity as Button, Alert } from 'react-native';
 import Share from 'react-native-share';
 
 import {
@@ -43,11 +43,11 @@ function Gallery() {
     })
 
     handleLike = async (idImage) => {
-        if (userLogged.idUser !== null) {
+        if (userLogged.idUser) {
             const idMarried = await AsyncStorage.getItem('@idMarried')
             dispatch(async_like_image(idMarried, idImage))
         } else {
-            alert('Você precisa estar logado, para curtir uma imagem.');
+            Alert.alert('Opa!', 'Você precisa estar logado, para curtir uma imagem.');
         }
     }
 

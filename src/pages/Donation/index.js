@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { StyleSheet } from 'react-native';
+
+import { TextInputMask } from 'react-native-masked-text'
+import { CreditCardInput } from "react-native-credit-card-input";
+import AsyncStorage from '@react-native-community/async-storage';
+import Icon from 'react-native-vector-icons/Feather';
+
+import api from '~/services/api';
+
 import {
     Container,
     ContainerScrollView,
     ContainerCard,
-    Rules,
     ButtonSubmit,
     TextButton,
     FormCard,
     FormGroup,
-    InputAmount
 } from './styles';
+import DonationLogout from './DonationLogout';
 
-import IconGravata from '~/assets/svgs/iconGravata.svg';
-import Icon from 'react-native-vector-icons/Feather';
+function Donation({navigation}) {
 
-import { CreditCardInput } from "react-native-credit-card-input";
-import api from '~/services/api';
-import AsyncStorage from '@react-native-community/async-storage';
-
-import { TextInputMask } from 'react-native-masked-text'
-
-function Donation() {
     const userLogged = useSelector(state => state.user);
     const married = useSelector(state => state.married);
     const [formCard, setFormCard] = useState({
@@ -51,6 +51,14 @@ function Donation() {
         tangible: true
     })
 
+    const options = {
+        precision: 2,
+        separator: ',',
+        delimiter: '.',
+        unit: 'R$',
+        suffixUnit: ''
+    }
+
     _onChange = form => {
 
         const { values, valid } = form;
@@ -58,101 +66,121 @@ function Donation() {
             card_number: values.number,
             card_cvv: values.cvc,
             card_expiration_date: values.expiry,
-            card_holder_name: '',
+            card_holder_name: values.name,
             isValid: valid
         })
     }
 
     _sendDonation = async () => {
+        const [precision, number] = formCard.amount.split('R$');
+        const numberSplit = number.split(',')
+        const pointSplit = numberSplit.join('').split('.');
+        const unionNumber = [...pointSplit];
+        const amountNumber = parseFloat(unionNumber.join(''));
+
         if (!formCard.isValid) {
-            console.log('Cartão invalido')
+            console.log('Cartão invalido');
             return false;
         }
+
         const idMarrid = await AsyncStorage.getItem('@idMarried');
-
-        const res = await api.post(`married/${idMarrid}/createTransaction`, { ...formCard, ...customer, ...item })
-
-        console.log(res);
+        await api.post(`married/${idMarrid}/createTransaction`, { ...formCard, amount: amountNumber, ...customer, ...item })
     }
 
+    handleLogin = () => navigation.navigate('Login');
+
     return (
+
         <Container>
-            <ContainerScrollView>
-                <ContainerCard>
-                    <CreditCardInput
-                        inputStyle={{
-                            backgroundColor: '#ddd',
-                            borderRadius: 50,
-                            borderWidth: 1,
-                            borderColor: '#ddd',
-                            height: 60
-                        }}
-                        inputContainerStyle={{
-                            borderWidth: 0,
-                            flexDirection: 'column',
-                        }}
-                        labels={{ name: 'Carlos' }}
-                        cardScale={1}
-                        onChange={_onChange} />
-                </ContainerCard>
 
-                <FormCard>
-                    <FormGroup>
-                        <TextInputMask
-                            type={'cpf'}
-                            placeholder="CPF"
-                            placeholderTextColor="#999"
-                            underlineColorAndroid="transparent"
-                            value={customer.cpf}
-                            onChangeText={cpf => setCustomer({ ...customer, cpf })}
-                        />
+            {!userLogged.idUser && <DonationLogout handleLogin={handleLogin}/>}
 
-                        <TextInputMask
-                            type={'cel-phone'}
-                            options={{
-                                maskType: 'BRL',
-                                withDDD: true,
-                                dddMask: '(99) '
+            {userLogged.idUser &&
+                <ContainerScrollView>
+                    <ContainerCard>
+                        <CreditCardInput
+                            inputStyle={{
+                                borderRadius: 50,
+                                borderWidth: 1,
+                                borderColor: '#ddd',
+                                height: 60
                             }}
-                            placeholder="Telefone"
-                            placeholderTextColor="#999"
-                            underlineColorAndroid="transparent"
-                            value={customer.phoneNumber}
-                            onChangeText={phoneNumber => setCustomer({ ...customer, phoneNumber })}
-                        />
-                        <InputAmount
-                            placeholder="R$ 0,00"
-                            placeholderTextColor="#999"
-                            underlineColorAndroid="transparent"
-                            value={formCard.amount}
-                            onChangeText={amount => setFormCard({ ...formCard, amount })}
-                        />
-                    </FormGroup>
+                            requiresName={true}
+                            addtionalInputsProps={{
+                                name: { defaultValue: '' }
+                            }}
+                            inputContainerStyle={{ borderWidth: 0 }}
+                            cardScale={1}
+                            onChange={_onChange} />
+                    </ContainerCard>
 
-                    <ButtonSubmit onPress={_sendDonation}>
-                        <TextButton>FAZER DOAÇÃO</TextButton>
-                    </ButtonSubmit>
-                </FormCard>
-            </ContainerScrollView>
+                    <FormCard>
+                        <FormGroup>
+
+                            <TextInputMask
+                                style={styles.inputMask}
+                                type={'cpf'}
+                                placeholder="CPF"
+                                placeholderTextColor="#999"
+                                underlineColorAndroid="transparent"
+                                value={customer.cpf}
+                                onChangeText={cpf => setCustomer({ ...customer, cpf })}
+                            />
+
+                            <TextInputMask
+                                style={styles.inputMask}
+                                type={'cel-phone'}
+                                options={{ maskType: 'BRL', withDDD: true, dddMask: '(99) ' }}
+                                placeholder="Telefone"
+                                placeholderTextColor="#999"
+                                underlineColorAndroid="transparent"
+                                value={customer.phoneNumber}
+                                onChangeText={phoneNumber => setCustomer({ ...customer, phoneNumber })}
+                            />
+                            <TextInputMask
+                                style={[styles.inputMask, styles.inputMoney]}
+                                type={'money'}
+                                options={options}
+                                placeholder="R$ 0,00"
+                                placeholderTextColor="#fff"
+                                underlineColorAndroid="transparent"
+                                value={formCard.amount}
+                                onChangeText={amount => setFormCard({ ...formCard, amount })}
+                            />
+                        </FormGroup>
+
+                        <ButtonSubmit disabled={!formCard.isValid} onPress={_sendDonation}>
+                            <TextButton>FAZER DOAÇÃO</TextButton>
+                        </ButtonSubmit>
+                    </FormCard>
+                </ContainerScrollView>
+            }
         </Container>
-
-
-
-        // <Container>
-        //     <IconGravata 
-        //         width={60} height={164} />
-
-        //     <Rules>
-        //         Essa é a hora que o casal irá construir sua vida do zero!!
-        //         Faça uma doação de qualquer valor ao casal.
-        //     </Rules>
-        // </Container>
     );
 }
 
-Donation.navigationOptions = (navigation) => {
+
+const styles = StyleSheet.create({
+    inputMask: {
+        borderRadius: 50,
+        borderWidth: 1,
+        borderColor: '#ddd',
+        marginBottom: 10,
+        fontSize: 14,
+        paddingHorizontal: 15,
+        paddingVertical: 15
+    },
+
+    inputMoney: {
+        backgroundColor: '#672F9E',
+        color: '#fff',
+        fontSize: 28,
+    }
+})
+
+Donation.navigationOptions = () => {
     return {
-        title: 'Doação',
+        title: 'Gravata',
         drawerIcon: ({ tintColor }) => (
             <Icon name="credit-card" color={tintColor} size={18} />
         ),
@@ -161,5 +189,6 @@ Donation.navigationOptions = (navigation) => {
         }
     }
 }
+
 
 export default Donation;

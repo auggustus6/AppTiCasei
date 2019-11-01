@@ -40,14 +40,16 @@ function Follows() {
     }
 
     verifyUserIntoMarried = () => {
-        userLogged.followMarrieds.forEach(u => {
-            if (u.id === married.dataMarried.id) {
-                setFollow(true)
-            }
-            else {
-                setFollow(false)
-            }
-        })
+        if (userLogged.idUser && userLogged.followMarrieds.length) {
+            userLogged.followMarrieds.forEach(u => {
+                if (u.id === married.dataMarried.id) {
+                    setFollow(true)
+                }
+                else {
+                    setFollow(false)
+                }
+            })
+        }
     }
 
     return (
@@ -64,16 +66,16 @@ function Follows() {
             <ListFollows>
                 {
                     userLogged.followMarrieds &&
-                    userLogged.followMarrieds.map(follow => {
-                        return (
-                            <FollowView key={follow._id}>
-                                <Follow>{follow.title}</Follow>
-                                <FollowButton onPress={() => handleMarried(follow.uniqueCode)}>
-                                    <FollowText>Visualizar</FollowText>
-                                </FollowButton>
-                            </FollowView>
-                        )
-                    })
+                        userLogged.followMarrieds.map(follow => {
+                            return (
+                                <FollowView key={follow._id}>
+                                    <Follow>{follow.title}</Follow>
+                                    <FollowButton onPress={() => handleMarried(follow.uniqueCode)}>
+                                        <FollowText>Visualizar</FollowText>
+                                    </FollowButton>
+                                </FollowView>
+                            )
+                        })
                 }
             </ListFollows>
         </ContainerFollows>
