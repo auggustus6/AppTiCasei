@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { View, Dimensions, TouchableOpacity as Button, Alert } from 'react-native';
 import Share from 'react-native-share';
@@ -29,18 +29,34 @@ import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { async_postComment, async_like_image } from '~/store/actions/marriedAction';
+
+import Modal_Image from '~/Modais/Modal_Image';
+
 const width = Dimensions.get('window').width;
 
 function Gallery() {
     const dispatch = useDispatch();
     const married = useSelector(state => state.married);
     const userLogged = useSelector(state => state.user);
+    
+    const [visibleModal, setVisibleModal] = useState(false);
+    const [imageModal, setImageModal] = useState(false);
 
     const [comment, setComment] = useState({
         author: '',
         comment: '',
         genre: userLogged.genre,
     })
+
+    function openModal(img) {
+        setImageModal(img);
+        setVisibleModal(!visibleModal);
+
+    }
+
+    function closeModal() {
+        setVisibleModal(!visibleModal);
+    }
 
     handleLike = async (idImage) => {
         if (userLogged.idUser) {
@@ -71,7 +87,7 @@ function Gallery() {
                 if (user === userLogged.idUser) return user
             })
 
-            if (userLikes === userLogged.idUser) {
+            if (userLikes === userLogged.idUser && userLikes !== undefined) {
                 return (
                     <View>
                         <Icon name="heart" size={24} color='#f1003b' />
@@ -98,7 +114,7 @@ function Gallery() {
         if (comment.comment !== '') {
             const idMarried = await AsyncStorage.getItem('@idMarried');
             dispatch(async_postComment(idMarried, idImage, comment))
-            setComment('');
+            setComment({ ...comment, comment: '' });
         }
     }
 
@@ -118,9 +134,22 @@ function Gallery() {
                         {married.dataMarried.gallery_url.map(gallery => {
                             if (feed._id === gallery._id) {
                                 return (
-                                    <CardImage style={{ width }} key={gallery._id}>
-                                        <ImageCard source={{ uri: gallery.label }} />
-                                    </CardImage>
+                                    <Fragment key={gallery._id}>
+                                        <Button onPress={() => openModal(gallery)} >
+                                            <CardImage style={{ width }}>
+                                                <ImageCard source={{ uri: gallery.label }} />
+                                            </CardImage>
+                                        </Button>
+
+
+                                        {visibleModal &&
+                                            <Modal_Image
+                                                image={imageModal}
+                                                visible={visibleModal}
+                                                closeModal={closeModal}
+                                            />
+                                        }
+                                    </Fragment>
                                 )
                             }
                         })}
@@ -178,6 +207,7 @@ function Gallery() {
                     </ContainerCard>
                 )
             })}
+
         </Container>
     );
 }

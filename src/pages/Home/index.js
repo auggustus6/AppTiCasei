@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { TouchableOpacity as Button } from 'react-native';
 
 import {
     GraphRequest,
@@ -10,6 +11,10 @@ import {
     Container,
     CardWelcome,
     ContainerImage,
+    BannerTime,
+    TextTime,
+    Time,
+    Days,
     ContentMarried,
     TitleMarried,
     Description,
@@ -38,12 +43,22 @@ function Home(props) {
         hasToken();
     }, [])
 
+
+    calculateIntervalDate = () => {
+        const daysAtMarried = new Date(married.dataMarried.date);
+        const today = new Date();
+        const intervalTime = Math.abs(daysAtMarried.getTime() - today.getTime());
+        const diffDays = Math.ceil(intervalTime / (1000 * 3600 * 24));
+
+        return diffDays;
+    }
+
     hasToken = async () => {
         const userAsync = await AsyncStorage.getItem('@userLogged');
         const user = JSON.parse(userAsync);
         const tokenFacebook = await AsyncStorage.getItem('@tokenFacebook');
         const token = await AsyncStorage.getItem('@token');
-        
+
         if (user && token && !tokenFacebook) {
             dispatch({
                 type: 'LOGGED_USER',
@@ -103,17 +118,14 @@ function Home(props) {
         <Container>
             <CardWelcome>
                 <ContainerImage source={{ uri: married.dataMarried.banner_url }}>
-                </ContainerImage>
-
-                <ContentMarried>
                     <TitleMarried>{married.dataMarried.title}</TitleMarried>
-                    <Description numberOfLines={5} ellipsizeMode='tail'>
-                        {married.dataMarried.annotations}
-                    </Description>
-                    <ReadMore onPress={() => props.navigation.navigate('Historia')}>
-                        <ReadText>Continuar história</ReadText>
-                    </ReadMore>
-                </ContentMarried>
+                </ContainerImage>
+                <BannerTime>
+                    <TextTime>FALTAM</TextTime>
+                    <Time>{calculateIntervalDate()}</Time>
+                    <Days>DIAS</Days>
+                </BannerTime>
+
 
             </CardWelcome>
 
@@ -130,25 +142,35 @@ function Home(props) {
             <HorizontalMenu
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}>
-                <CardPresence>
-                    <IconAccount width={50} height={50} />
-                    <TitleIcon>Marcar Presença</TitleIcon>
-                </CardPresence>
 
-                <CardPresence>
-                    <IconAccount width={50} height={50} />
-                    <TitleIcon>Lista Presentes</TitleIcon>
-                </CardPresence>
+                <Button onPress={() => props.navigation.navigate('RSVP')}>
+                    <CardPresence>
 
-                <CardPresence>
-                    <IconAccount width={50} height={50} />
-                    <TitleIcon>Galeria</TitleIcon>
-                </CardPresence>
+                        <IconAccount width={50} height={50} />
+                        <TitleIcon>Marcar Presença</TitleIcon>
+                    </CardPresence>
+                </Button>
 
-                <CardPresence>
-                    <IconAccount width={50} height={50} />
-                    <TitleIcon>Mensagens</TitleIcon>
-                </CardPresence>
+                <Button onPress={() => props.navigation.navigate('Presentes')}>
+                    <CardPresence>
+                        <IconAccount width={50} height={50} />
+                        <TitleIcon>Lista Presentes</TitleIcon>
+                    </CardPresence>
+                </Button>
+
+                <Button onPress={() => props.navigation.navigate('Galeria')}>
+                    <CardPresence>
+                        <IconAccount width={50} height={50} />
+                        <TitleIcon>Galeria</TitleIcon>
+                    </CardPresence>
+                </Button>
+
+                <Button onPress={() => props.navigation.navigate('Mensagens')}>
+                    <CardPresence>
+                        <IconAccount width={50} height={50} />
+                        <TitleIcon>Mensagens</TitleIcon>
+                    </CardPresence>
+                </Button>
             </HorizontalMenu>
         </Container>
     );

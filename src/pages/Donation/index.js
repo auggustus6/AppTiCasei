@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 
 import { TextInputMask } from 'react-native-masked-text'
 import { CreditCardInput } from "react-native-credit-card-input";
@@ -20,10 +20,11 @@ import {
 } from './styles';
 import DonationLogout from './DonationLogout';
 
-function Donation({navigation}) {
-
+function Donation({ navigation }) {
     const userLogged = useSelector(state => state.user);
     const married = useSelector(state => state.married);
+
+    const [loading, setLoading]=useState(false);
     const [formCard, setFormCard] = useState({
         amount: '',
         card_number: 0,
@@ -72,6 +73,7 @@ function Donation({navigation}) {
     }
 
     _sendDonation = async () => {
+        setLoading(true);
         const [precision, number] = formCard.amount.split('R$');
         const numberSplit = number.split(',')
         const pointSplit = numberSplit.join('').split('.');
@@ -79,12 +81,22 @@ function Donation({navigation}) {
         const amountNumber = parseFloat(unionNumber.join(''));
 
         if (!formCard.isValid) {
-            console.log('Cartão invalido');
+            Alert.alert('Opa', 'Cartão está invalido. Verifique informações');
+            setLoading(false);
             return false;
         }
 
         const idMarrid = await AsyncStorage.getItem('@idMarried');
-        await api.post(`married/${idMarrid}/createTransaction`, { ...formCard, amount: amountNumber, ...customer, ...item })
+        const res = await api.post(`married/${idMarrid}/createTransaction`, { ...formCard, amount: amountNumber, ...customer, ...item });
+
+        if (res.status === 200) {
+            setLoading(false);
+            navigation.navigate('Confirmacoes');
+        } else {
+            setLoading(false);
+            Alert.alert('Opa', 'Tente novamente mais tarde.');
+        }
+
     }
 
     handleLogin = () => navigation.navigate('Login');
@@ -93,7 +105,7 @@ function Donation({navigation}) {
 
         <Container>
 
-            {!userLogged.idUser && <DonationLogout handleLogin={handleLogin}/>}
+            {!userLogged.idUser && <DonationLogout handleLogin={handleLogin} />}
 
             {userLogged.idUser &&
                 <ContainerScrollView>
@@ -130,7 +142,7 @@ function Donation({navigation}) {
                             <TextInputMask
                                 style={styles.inputMask}
                                 type={'cel-phone'}
-                                options={{ maskType: 'BRL', withDDD: true, dddMask: '(99) ' }}
+                                options={{ maskType: 'BRL', withDDD: true, dddMask: '+55 99 ' }}
                                 placeholder="Telefone"
                                 placeholderTextColor="#999"
                                 underlineColorAndroid="transparent"
@@ -150,7 +162,9 @@ function Donation({navigation}) {
                         </FormGroup>
 
                         <ButtonSubmit disabled={!formCard.isValid} onPress={_sendDonation}>
-                            <TextButton>FAZER DOAÇÃO</TextButton>
+                            <TextButton>
+                                {loading ? 'ENVIANDO...' : 'FAZER DOAÇÃO'}
+                            </TextButton>
                         </ButtonSubmit>
                     </FormCard>
                 </ContainerScrollView>

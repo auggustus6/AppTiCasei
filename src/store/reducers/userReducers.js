@@ -63,13 +63,24 @@ export default function UserReducers(state = INITIAL_STATE, action) {
 
             return {
                 ...state,
+                loading:false,
                 ...action.payload
+            }
+        }
+
+        case 'UPDATE_IMAGE_USER': {
+
+            return {
+                ...state,
+                loading:false,
+                image: action.payload
             }
         }
 
         case 'FOLLOW_MARRIED': {
             return {
                 ...state,
+                loading:false,
                 followMarrieds: [...action.payload.followMarrieds]
             }
         }
@@ -104,6 +115,7 @@ export default function UserReducers(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 error: true,
+                loading:false,
                 message: 'Algo aconteceu, tente novamente mais tarde.'
             }
         }

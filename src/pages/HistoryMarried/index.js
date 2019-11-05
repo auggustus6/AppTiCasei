@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import {
@@ -12,9 +12,23 @@ import {
 } from './styles';
 
 import Icon from 'react-native-vector-icons/Feather';
+import Modal_Image from '~/Modais/Modal_Image';
 
 function HistoryMarried() {
+    const [visibleModal, setVisibleModal] = useState(false);
+    const [imageModal, setImageModal] = useState(false);
     const married = useSelector(state => state.married);
+
+    function openModal(img) {
+        setImageModal(img);
+        setVisibleModal(!visibleModal);
+
+    }
+
+    function closeModal() {
+        setVisibleModal(!visibleModal);
+    }
+
     return (
         <Container>
             <ContainerImage
@@ -34,11 +48,20 @@ function HistoryMarried() {
                 {
                     married.dataMarried.gallery_url.map((img) => {
                         return (
-                            <ClickImage key={img._id}>
+                            <ClickImage key={img._id} onPress={() => openModal(img)}>
                                 <Image source={{ uri: img.label }} />
                             </ClickImage>
+
                         )
                     })
+                }
+
+                {visibleModal &&
+                    <Modal_Image
+                        image={imageModal}
+                        visible={visibleModal}
+                        closeModal={closeModal}
+                    />
                 }
 
             </ContainerGallerys>

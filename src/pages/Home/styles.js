@@ -18,24 +18,68 @@ export const CardWelcome = styled.View.attrs({
     elevation: 5,
 })`
     margin-bottom:20px;
-    border-radius:5px;
+    border-radius:10px;
     background:#fff;
 
 `;
 export const ContainerImage = styled.ImageBackground.attrs({
-    resizeMode: 'cover'
+    resizeMode: 'cover',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
 })`
     width:100%;
-    height:150px;
+    height:250px;
+    justify-content:center;
+    align-items:center;
 `;
+
+export const BannerTime = styled.View.attrs({
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+})`
+    flex-direction:row;
+    align-items:center;
+    justify-content:center;
+    background:#7230B4;
+    padding:5px 0px;
+`;
+
+export const TextTime = styled.Text`
+    font-size:18px;
+    margin-right:15px;
+    color:#fff;
+`;
+
+export const Time = styled.Text`
+    border:2px solid #7230B4;
+    background:#7230B4;
+    border-radius:10px;
+    padding:5px 20px;
+    font-size:52px;
+    color:#fff;
+    font-weight:bold;
+    align-items:center;
+    justify-content:center;
+`;
+
+export const Days = styled.Text`
+    font-size:14px;
+    margin-left:15px;
+    color:#fff;
+`;
+
+
 export const ContentMarried = styled.View`
     padding:15px;
 `;
 export const TitleMarried = styled.Text`
-    color:#999;
-    font-size:14px;
+    color:#fff;
+    font-size:18px;
+    text-shadow:2px 2px 10px #333;
     text-align:center;
     margin:10px 0;
+    text-transform:uppercase;
+
 `;
 export const Description = styled.Text`
     font-size:13px;
@@ -100,7 +144,7 @@ export const CardPresence = styled.View.attrs({
     align-items:center;
     justify-content:center;
     width:100px;
-    height:auto;
+    height:90%;
     border-radius:10px;
 `;
 export const TitleIcon = styled.Text`

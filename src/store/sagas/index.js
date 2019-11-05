@@ -126,8 +126,11 @@ async function callUserCreate(action) {
 async function callUpdateUser(action) {
   const { idUser, archive, ...user } = action.payload.user;
   let response;
-  if (archive) {
 
+  if (archive) {
+    const formData = new FormData();
+    formData.append('image', user.data);
+    response = await api.put(`user/updateImage/${idUser}`, formData)
   } else {
     response = await api.put(`user/update/${idUser}`, user)
   }
@@ -188,20 +191,32 @@ function* createUser(action) {
 
 function* updateUser(action) {
 
+  yield put({
+    type: 'REQUEST_USERS'
+  })
+
   try {
     const response = yield call(callUpdateUser, action)
-    console.log(response);
 
-    yield put({
-      type: 'UPDATE_USER',
-      payload: {
-        ...response.data,
-        image: response.data.image_url
-      }
-    })
+    if (action.payload.user.archive) {
+      yield put({
+        type: 'UPDATE_IMAGE_USER',
+        payload: response.data,
+      })
+      
+    } else {
+      yield put({
+        type: 'UPDATE_USER',
+        payload: {
+          ...response.data,
+          image: response.data.image_url
+        }
+      })
 
-    yield call(storagedUser, JSON.stringify({ ...response.data, image: response.data.image_url }));
-    yield put(navService.navigate('Home', { user: response.data }));
+      yield call(storagedUser, JSON.stringify({ ...response.data, image: response.data.image_url }));
+      yield put(navService.navigate('Home', { user: response.data }));
+
+    }
 
   } catch (error) {
     console.log(error);

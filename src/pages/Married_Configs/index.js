@@ -23,18 +23,28 @@ import AsyncStorage from '@react-native-community/async-storage';
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
 
-// const RNFS = require('react-native-fs');
-
 
 function Married_Configs({ navigation }) {
     const dispatch = useDispatch();
     const userLogged = useSelector(state => state.user);
+
+    const [visibleModal, setVisibleModal] = useState(false);
+    const [imageModal, setImageModal] = useState(false);
 
     const [account, setAccount] = useState({
         Email: userLogged.Email,
         Nome: userLogged.Nome,
         idUser: userLogged.idUser
     });
+
+    function openModal(img) {
+        setImageModal(img);
+        setVisibleModal(!visibleModal);
+    }
+
+    function closeModal() {
+        setVisibleModal(!visibleModal);
+    }
 
     handleLogout = async () => {
         dispatch({ type: 'LOGOUT_USER' });
@@ -62,13 +72,12 @@ function Married_Configs({ navigation }) {
             } else if (response.error) {
                 alert('ImagePicker Error: ', response.error);
             } else {
-                const imageResizer = await ImageResizer.createResizedImage(response.uri, 350, 350, 'JPEG', 100)
-
-               let data = {
-                    filename: imageResizer.name,
+                const imageResizer = await ImageResizer.createResizedImage(response.uri, 350, 350, 'JPEG', 100);
+                let data = {
+                    name: response.fileName,
                     type: response.type,
-                    path: imageResizer.path,
-                    uri: Platform.OS === "android" ? imageResizer.uri : imageResizer.uri.replace("file://", "")
+                    path: response.path,
+                    uri: Platform.OS === "android" ? response.uri : response.uri.replace("file://", "")
                 }
 
                 const dataEnd = {
@@ -84,7 +93,9 @@ function Married_Configs({ navigation }) {
     return (
 
         <Container>
-            <ContainerImage source={{ uri: userLogged.image ? userLogged.image : null }}>
+
+            <ContainerImage
+                source={{ uri: userLogged.image ? userLogged.image : null }}>
                 {!userLogged.image && <Icon name="image" size={140} color="#eee" />}
 
                 <ButtonChangeImage onPress={handleImage}>
@@ -109,11 +120,10 @@ function Married_Configs({ navigation }) {
                     underlineColorAndroid="transparent"
                     onChangeText={email => setAccount({ ...account, Email: email })} />
 
-
                 <Follows />
 
-                <ButtonSubmit onPress={handleAccount}>
-                    <TextButton>Salvar</TextButton>
+                <ButtonSubmit onPress={handleAccount} disabled={userLogged.loading}>
+                    <TextButton>{userLogged.loading ? 'Salvando' : 'Salvar'}</TextButton>
                 </ButtonSubmit>
 
 

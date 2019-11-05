@@ -9,6 +9,7 @@ import HistoryMarried from './pages/HistoryMarried';
 import Message from './pages/Message';
 import Gifts from './pages/Gifts';
 import Gallery from './pages/Gallery';
+import Mural from './pages/Mural';
 import Donation from './pages/Donation';
 
 // Tabs about page event
@@ -20,6 +21,7 @@ import Married_Account from '~/pages/Married_Account';
 import Married_Loggin from '~/pages/Married_Loggin';
 import Married_Configs from '~/pages/Married_Configs';
 
+import Modal_Confirmations from './Modais/Modal_Confirmations';
 
 // Options Navigator
 import {
@@ -28,6 +30,7 @@ import {
     optionsModal,
     optionsRoot
 } from './optionsNavigator'
+
 
 
 const MainScreen = createSwitchNavigator({
@@ -41,6 +44,7 @@ const RootScreen = createDrawerNavigator({
     Presentes: Gifts,
     Gravata: Donation,
     Galeria: Gallery,
+    Mural: Mural,
     Evento:
         createMaterialTopTabNavigator({
             Location,
@@ -49,16 +53,18 @@ const RootScreen = createDrawerNavigator({
 }, optionsRootScreen)
 
 
-const ModalAccount = createStackNavigator({
+
+const Modals = createStackNavigator({
     Configuracoes: { screen: Married_Configs },
     Login: { screen: Married_Loggin },
-    Conta: { screen: Married_Account }
+    Conta: { screen: Married_Account },
+    Confirmacoes: { screen: Modal_Confirmations},
 }, optionsModal)
 
 
 const Routes = createAppContainer(
     createStackNavigator({
-        ModalAccount,
+        Modals,
         MainScreen,
         RootScreen
     }, optionsRoot))

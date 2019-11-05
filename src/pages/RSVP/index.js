@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { Alert } from 'react-native';
 import { useSelector } from 'react-redux';
+
+import api from '~/services/api';
 
 import {
     Container,
@@ -14,7 +17,6 @@ import {
     ButtonSubmit,
     TextButton
 } from './styles';
-import api from '~/services/api';
 
 
 function RSVP() {
@@ -26,9 +28,30 @@ function RSVP() {
         adults: 1
     })
 
+    clearInputs = () => {
+        setForm({
+            guest: '',
+            phoneNumber: null,
+            presence: true,
+            adults: 1
+        })
+    }
 
-    handlePresence = async() => {
-       await api.post(`married/${married.dataMarried.id}/confirmPresence`, form);
+    formatDate = () => {
+        const [date, ...rest] = married.dataMarried.date.split('T');
+        const d = date.split('-');
+        const newDate = d.reverse().join('/');
+        return newDate;
+    }
+
+    handlePresence = async () => {
+        const res = await api.post(`married/${married.dataMarried.id}/confirmPresence`, form);
+        if (res.status === 200) {
+            Alert.alert('Obrigado', res.data.message);
+            clearInputs()
+        } else {
+            Alert.alert('Opa!', res.data.message);
+        }
     }
 
     return (
@@ -40,7 +63,7 @@ function RSVP() {
                         placeholder="Data do casamento"
                         placeholderTextColor="#333"
                         editable={false}
-                        value="12/10/2022"
+                        value={formatDate()}
                         underlineColorAndroid='transparent'
                     />
                 </FormGroup>
