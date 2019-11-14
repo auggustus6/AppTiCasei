@@ -26,6 +26,7 @@ export default function UserReducers(state = INITIAL_STATE, action) {
             }
 
         case 'CREATE_USER':
+          
             return {
                 ...state,
                 loading: false,
@@ -42,7 +43,7 @@ export default function UserReducers(state = INITIAL_STATE, action) {
             }
 
         case 'AUTH_LOGGED': {
-
+   
             return {
                 ...state,
                 Nome: action.payload.Nome,
@@ -73,7 +74,8 @@ export default function UserReducers(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 loading:false,
-                image: action.payload
+                image: action.payload.image_url
+
             }
         }
 
@@ -87,6 +89,7 @@ export default function UserReducers(state = INITIAL_STATE, action) {
 
 
         case 'LOGGED_USER': {
+         
             return {
                 ...state,
                 followMarrieds: action.payload.followMarrieds,

@@ -1,11 +1,14 @@
 import styled from 'styled-components/native';
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
     flex:1;
+    justify-content:center;
+    align-items:center;
 `;
 
-export const ContainerCard = styled.View``;
+export const ContainerMural = styled.ScrollView``;
 
+export const ContainerCard = styled.View``;
 
 export const CardHeader = styled.View`
     padding:20px 10px;
@@ -48,7 +51,6 @@ export const CardActions = styled.View`
     align-items:center;
     margin-right:10px;
 `;
-
 
 export const CardFooter = styled.View`
     padding:10px;
@@ -102,18 +104,18 @@ export const InputCommentaries = styled.TextInput.attrs({
 `;
 
 export const ContainerBadge = styled.View`
-position:absolute;
-justify-content:center;
-align-items:center;
-background:#333;
-bottom:10px;
-right:10px;
-width:60px;
-height:60px;
-border-radius:50px;
-padding:10px;
+    position:absolute;
+    z-index:99;
+    bottom:20px;
+    right:5px;
 `;
 
 export const BadgeModal = styled.TouchableOpacity`
-
+    justify-content:center;
+    align-items:center;
+    background:#333;
+    width:60px;
+    height:60px;
+    border-radius:30px;
+    padding:10px;
 `;

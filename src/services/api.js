@@ -2,8 +2,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const api = axios.create({
-  // baseURL: 'http://98c28d5b.ngrok.io/',
-  // baseURL:'http://192.168.15.16:3333'
+  // baseURL:'http://192.168.15.16:3333/'
   baseURL: 'https://powerful-river-29517.herokuapp.com/',
 
 });

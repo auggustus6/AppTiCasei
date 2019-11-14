@@ -24,6 +24,7 @@ export const Date = styled.Text`
 
 export const CardImage = styled.View`
     height:200px;
+ 
 `;
 export const ImageCard = styled.Image.attrs({
     resizeMode: 'cover'

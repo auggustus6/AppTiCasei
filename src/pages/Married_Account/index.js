@@ -105,6 +105,8 @@ function Married_Account({ navigation }) {
             onChangeText={email => setAccount({ ...account, Email: email })} />
           <InputForms
             placeholder="Senha de acesso"
+            secureTextEntry={true}
+            autoCapitalize="none"
             placeholderTextColor="#B6B3B3"
             underlineColorAndroid="transparent"
             onChangeText={password => setAccount({ ...account, Password: password })} />

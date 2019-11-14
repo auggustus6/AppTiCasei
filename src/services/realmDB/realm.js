@@ -1,11 +1,11 @@
 import Realm from 'realm';
-import { CommentSchema } from '~/schemas/comment';
+import { MuralSchema } from '~/schemas/mural';
 
 
-export const getRealm = async () => {
+export const connectRealm = async () => {
     const realm = await Realm.open({
-        schema: [CommentSchema],
-        schemaVersion: 1
+        schema: [MuralSchema],
+        schemaVersion: 3
     });
     return realm;
 }  

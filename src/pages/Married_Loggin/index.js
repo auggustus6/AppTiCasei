@@ -54,7 +54,7 @@ function Married_Login({ navigation }) {
         type: 'Facebook',
         Password: ''
       }));
-
+    
     }
   }
 
@@ -92,6 +92,8 @@ function Married_Login({ navigation }) {
           <InputForms
             placeholder="Senha de acesso"
             placeholderTextColor="#B6B3B3"
+            secureTextEntry={true}
+            autoCapitalize="none"
             underlineColorAndroid="transparent"
             onChangeText={password => setAccount({ ...account, Password: password })} />
 

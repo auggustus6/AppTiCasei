@@ -20,6 +20,7 @@ import ImageResizer from 'react-native-image-resizer';
 
 import Icon from 'react-native-vector-icons/Feather';
 import api from '~/services/api';
+import { createMural } from '~/services/realmDB/muralService.js';
 
 const width = Dimensions.get('window').width;
 const noImage = 'https://icon-library.net/images/no-image-available-icon/no-image-available-icon-6.jpg';
@@ -33,21 +34,19 @@ export default function Modal_Form({ visible, closeModal }) {
         description: ''
     });
 
+    
     useEffect(() => {
-        return () => {
+        let mounted = false;
+        if(!mounted){
             setForm({
                 thumbnail: null,
                 description: '',
             })
         }
-    }, [])
-
-
-    useEffect(() => {
-        setForm({
-            thumbnail: null,
-            description: '',
-        })
+        return () => {
+            mounted = true;
+        }
+   
     }, [visible])
 
 
@@ -61,6 +60,8 @@ export default function Modal_Form({ visible, closeModal }) {
             return;
         }
 
+        // await createMural(form.description);
+    
         const data = new FormData();
         data.append('mural', form.thumbnail);
         data.append('description', form.description);
@@ -95,9 +96,7 @@ export default function Modal_Form({ visible, closeModal }) {
             } else if (response.error) {
                 return;
             } else {
-                const imageResizer = await ImageResizer.createResizedImage(response.uri, 350, 350, 'JPEG', 100);
-                console.log(imageResizer);
-
+                const imageResizer = await ImageResizer.createResizedImage(response.uri, 350, 350, 'PNG', 70);
                 setForm({ ...form, thumbnail: { ...imageResizer, type: response.type } })
             };
         })
@@ -105,7 +104,7 @@ export default function Modal_Form({ visible, closeModal }) {
 
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={[styles.container, !visible ? { display:"none"} : {display:'flex'} ]}>
             <Modal
                 animationType="slide"
                 transparent={false}
@@ -149,7 +148,7 @@ export default function Modal_Form({ visible, closeModal }) {
                     </Button>
                 </View>
             </Modal>
-        </ScrollView>
+        </ScrollView >
     );
 }
 

@@ -15,7 +15,7 @@ export default function Modal_Image({ visible, closeModal, image }) {
                 <View>
                     <View style={styles.containerImage}>
                         <Image
-                            source={{ uri: image.label }}
+                            source={{ uri: image.label_url ? image.label_url : image.label }}
                             style={styles.image}
                         />
                     </View>

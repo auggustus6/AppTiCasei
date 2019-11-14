@@ -19,6 +19,7 @@ async function storagedToken(token) {
 }
 
 async function storagedUser(user) {
+
   await AsyncStorage.setItem('@userLogged', user);
 }
 
@@ -117,9 +118,21 @@ async function followMarriedUser(action) {
 }
 
 async function callUserCreate(action) {
-  const { Email, Password, Nome, genre, type } = action.payload.user;
+  const { Email, Password, Nome, genre, type, Image } = action.payload.user;
 
-  const response = await api.post('account/register', { Email, Password, Nome, genre, type })
+  let dadosCriar = {};
+
+  if (type === 'Facebook') {
+    dadosCriar = {
+      Email, Password, Nome, genre, type, Image
+    }
+  } else {
+    dadosCriar = {
+      Email, Password, Nome, genre, type
+    }
+  }
+
+  const response = await api.post('account/register', dadosCriar)
   return response;
 }
 
@@ -167,11 +180,11 @@ function* createUser(action) {
 
   try {
     const response = yield call(callUserCreate, action)
-
     yield put({
       type: 'CREATE_USER',
       payload: {
         followMarrieds: response.data.followMarrieds,
+        type:action.payload.user.type,
         Nome: response.data.Nome,
         image: action.payload.user.Image,
         genre: response.data.genre,
@@ -180,8 +193,9 @@ function* createUser(action) {
         id: response.data.id,
       }
     })
+
     yield call(storagedToken, response.data.token);
-    yield call(storagedUser, JSON.stringify(response.data));
+    yield call(storagedUser, JSON.stringify({ ...response.data, image: action.payload ? action.payload.user.Image : null }));
     yield put(navService.navigate('Home', { user: response.data }));
 
   } catch (error) {
@@ -203,7 +217,7 @@ function* updateUser(action) {
         type: 'UPDATE_IMAGE_USER',
         payload: response.data,
       })
-      
+
     } else {
       yield put({
         type: 'UPDATE_USER',
@@ -212,11 +226,10 @@ function* updateUser(action) {
           image: response.data.image_url
         }
       })
-
-      yield call(storagedUser, JSON.stringify({ ...response.data, image: response.data.image_url }));
-      yield put(navService.navigate('Home', { user: response.data }));
-
     }
+    yield call(storagedUser, JSON.stringify({ ...response.data, image: response.data.image_url }));
+    yield put(navService.navigate('Home', { user: response.data }));
+
 
   } catch (error) {
     console.log(error);
@@ -236,7 +249,7 @@ function* loggedUser(action) {
         Nome: response.data.Nome,
         genre: response.data.genre,
         Email: response.data.Email,
-        image: response.data.Image ? response.data.Image : null,
+        image: response.data.image_url ? response.data.image_url : null,
         id: response.data.id,
         assignedTo: response.data.assignedTo,
         token: response.data.token

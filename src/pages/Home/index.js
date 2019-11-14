@@ -58,11 +58,12 @@ function Home(props) {
         const user = JSON.parse(userAsync);
         const tokenFacebook = await AsyncStorage.getItem('@tokenFacebook');
         const token = await AsyncStorage.getItem('@token');
-
+        
         if (user && token && !tokenFacebook) {
+          
             dispatch({
                 type: 'LOGGED_USER',
-                payload: { ...user, token }
+                payload: { ...user, token, image: user.image_url }
             })
             props.navigation.setParams({ user });
 
@@ -95,13 +96,14 @@ function Home(props) {
             const userAsync = await AsyncStorage.getItem('@userLogged');
             const userToken = JSON.parse(userAsync);
             const token = await AsyncStorage.getItem('@token');
+            
 
             let user = {};
             user.id = userToken.id;
             user.idFacebook = result.id;
             user.Nome = result.name === userToken.Nome ? result.name : userToken.Nome;
             user.Email = result.email === userToken.Email ? result.email : userToken.Email;
-            user.image = userToken.image_url;
+            user.image = result.picture.data.url;
             user.genre = 'Masculino';
             user.type = 'Facebook';
 

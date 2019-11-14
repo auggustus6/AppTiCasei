@@ -45,7 +45,9 @@ function RSVP() {
     }
 
     handlePresence = async () => {
+        if(form.guest === '') return;
         const res = await api.post(`married/${married.dataMarried.id}/confirmPresence`, form);
+        
         if (res.status === 200) {
             Alert.alert('Obrigado', res.data.message);
             clearInputs()
@@ -106,7 +108,7 @@ function RSVP() {
                         select={true}>
                         <Label>Quantos adultos?</Label>
                         <Select
-                            selectedValue='1'
+                            selectedValue={form.adults}
                             onValueChange={(item, itemIndex) => {
                                 setForm({ ...form, adults: item })
                             }}>

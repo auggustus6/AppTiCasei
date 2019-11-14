@@ -28,6 +28,7 @@ function Married_Configs({ navigation }) {
     const dispatch = useDispatch();
     const userLogged = useSelector(state => state.user);
 
+
     const [visibleModal, setVisibleModal] = useState(false);
     const [imageModal, setImageModal] = useState(false);
 
@@ -53,7 +54,11 @@ function Married_Configs({ navigation }) {
         navigation.navigate('Main');
     }
 
-    handleAccount = () => dispatch(updateUser(account));
+    handleAccount = () => {
+        if (account.Nome !== userLogged.Nome) {
+            dispatch(updateUser(account));
+        }
+    }
 
     handleImage = () => {
 
@@ -73,11 +78,12 @@ function Married_Configs({ navigation }) {
                 alert('ImagePicker Error: ', response.error);
             } else {
                 const imageResizer = await ImageResizer.createResizedImage(response.uri, 350, 350, 'JPEG', 100);
+
                 let data = {
-                    name: response.fileName,
+                    name: imageResizer.name,
                     type: response.type,
-                    path: response.path,
-                    uri: Platform.OS === "android" ? response.uri : response.uri.replace("file://", "")
+                    path: imageResizer.path,
+                    uri: Platform.OS === "android" ? imageResizer.uri : imageResizer.uri.replace("file://", "")
                 }
 
                 const dataEnd = {
@@ -98,9 +104,11 @@ function Married_Configs({ navigation }) {
                 source={{ uri: userLogged.image ? userLogged.image : null }}>
                 {!userLogged.image && <Icon name="image" size={140} color="#eee" />}
 
-                <ButtonChangeImage onPress={handleImage}>
-                    <Icon name="upload-cloud" size={20} color="#fff" />
-                </ButtonChangeImage>
+                {userLogged.type !== 'Facebook' &&
+                    <ButtonChangeImage onPress={handleImage}>
+                        <Icon name="upload-cloud" size={20} color="#fff" />
+                    </ButtonChangeImage>
+                }
             </ContainerImage>
 
             <Form>

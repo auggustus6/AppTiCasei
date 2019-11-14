@@ -24,7 +24,7 @@ import {
 
 function Main({ navigation }) {
   const dispatch = useDispatch();
-  const [code, setCode] = useState('LauCar#kjhfze32wiqwor4w415q8j');
+  const [code, setCode] = useState('LauCar#i4rvso31e1tfi853wu0xc');
 
   useEffect(() => {
     hasCode();
