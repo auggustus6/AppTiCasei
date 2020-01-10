@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Alert } from'react-native';
+import {View,  Alert, Animated, Easing} from'react-native';
 
 import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -19,9 +19,28 @@ import {
 } from './styles';
 
 function Message() {
+    const opacidade = new Animated.Value(0);
+    const posicao = new Animated.ValueXY(0,0);
     const userLogged = useSelector(state => state.user);
     const [name, setName] = useState(userLogged.Nome ? userLogged.Nome : '');
     const [text, setText] = useState('');
+
+    useEffect(()=>{
+           Animated.timing(opacidade, {
+                toValue: 1,
+                duration:1000,
+                useNativeDriver:true
+            }).start();
+    }, [])
+
+    // Animated.loop(
+    //     Animated.timing(glass, {
+    //       toValue: 1,
+    //       duration: 400,
+    //       Infinite: true,
+    //       useNativeDriver: true
+    //     })
+    //   ).start();
 
 
     sendMessage = async () => {
@@ -33,11 +52,11 @@ function Message() {
                 Alert.alert('Obrigado', res.data.message);
                 clearInputs();
             }else {
-                Alert.alert('Opa', res.data.message);
+                Alert.alert('Ops, algo aconteceu', res.data.message);
                 clearInputs();
             }
         } else {
-            Alert.alert('Opa', 'Nome ou Mensagem estão em branco');
+            Alert.alert('Ops', 'nome e/ou mensagem estão em branco');
         }
     }
 
@@ -54,8 +73,17 @@ function Message() {
             justifyContent:'center',
             padding:20,
         }}>
-            <IconMessage width={100} height={100} />
-
+            <Animated.View style={{
+            transform: [
+              {
+                translateX: opacidade.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [1000, 0]
+                })
+              }]
+            }}>
+                <IconMessage width={100} height={100} />
+            </Animated.View>
             <Form>
                 <TitleForm>Deixe uma mensagem para  os noivos!</TitleForm>
 

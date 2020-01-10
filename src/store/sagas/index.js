@@ -5,6 +5,11 @@ import { Alert } from 'react-native';
 import api from '~/services/api';
 import AsyncStorage from '@react-native-community/async-storage';
 
+// ALERTAS
+function alertaErro({ data: { message } }) {
+  Alert.alert('Ops, algo aconteceu!', message)
+}
+
 // STORAGES
 async function storagedId(keys) {
   await AsyncStorage.setItem('@idMarried', keys);
@@ -19,7 +24,6 @@ async function storagedToken(token) {
 }
 
 async function storagedUser(user) {
-
   await AsyncStorage.setItem('@userLogged', user);
 }
 
@@ -44,7 +48,7 @@ function* requestMarried(action) {
     yield call(storagedId, resp.data._id);
     yield call(storageCode, resp.data.uniqueCode);
 
-    yield put(navService.navigate('Home'))
+    yield put(navService.navigate('Home'));
   }
   catch (error) {
     yield put({
@@ -73,7 +77,7 @@ function* likeImage(action) {
     })
 
   } catch (err) {
-    console.log(err);
+    yield call(alertaErro, error.response);
   }
 }
 
@@ -105,7 +109,7 @@ function* postComment(action) {
 
 
   } catch (err) {
-    console.log(err);
+    yield call(alertaErro, error.response);
   }
 }
 
@@ -170,7 +174,7 @@ function* followMarried(action) {
     yield call(storagedUser, JSON.stringify(response.data));
 
   } catch (err) {
-    console.log(err);
+    yield call(alertaErro, error.response);
   }
 
 }
@@ -184,7 +188,7 @@ function* createUser(action) {
       type: 'CREATE_USER',
       payload: {
         followMarrieds: response.data.followMarrieds,
-        type:action.payload.user.type,
+        type: action.payload.user.type,
         Nome: response.data.Nome,
         image: action.payload.user.Image,
         genre: response.data.genre,
@@ -199,7 +203,7 @@ function* createUser(action) {
     yield put(navService.navigate('Home', { user: response.data }));
 
   } catch (error) {
-    console.log(error);
+    yield call(alertaErro, error.response);
   }
 }
 
@@ -232,7 +236,7 @@ function* updateUser(action) {
 
 
   } catch (error) {
-    console.log(error);
+    yield call(alertaErro, error.response);
   }
 
 }
@@ -262,10 +266,12 @@ function* loggedUser(action) {
     }))
 
   } catch (error) {
-    console.log(error);
-  }
+    yield call(alertaErro, error.response);
 
+  }
 }
+
+
 
 export default function* rootSaga() {
   yield all([
