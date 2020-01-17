@@ -1,11 +1,11 @@
 
+  <h3 align="center">Aplicativo Ti Casei</h3>
 <br />
 <p align="center">
   <a href="https://rocketseat.com.br">
     <img src="https://iniciodesign.com.br/images/appticasei.png" alt="Logo">
   </a>
 
-  <h3 align="center">Aplicativo Ti Casei</h3>
 </p>
 
 
@@ -20,11 +20,11 @@ Na aba gravata online, o convidado após o cadastro pode realizar uma doação a
 Existem mapas de localização tanto pro evento como para a cerimônia, além de um formulário para confirmação de convidados.
 
 ## Utilizado:
- Api NodeJs / MongoDb
- Redux Saga
- Geolocalização / Watching Geo
- Camera Mobile
- Integração com o gateway do pagar.me (Sandbox)
+ Api NodeJs / MongoDb <br>
+ Redux Saga <br>
+ Geolocalização / Watching Geo <br>
+ Camera Mobile <br>
+ Integração com o gateway do pagar.me (Sandbox)<br>
 
 
 ### Feito Com
