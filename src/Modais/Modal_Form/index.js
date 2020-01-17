@@ -60,7 +60,7 @@ export default function Modal_Form({ visible, closeModal }) {
             return;
         }
 
-        await createMural(form);
+        // await createMural(form.description);
     
         const data = new FormData();
         data.append('mural', form.thumbnail);
