@@ -19,13 +19,14 @@ Na aba gravata online, o convidado após o cadastro pode realizar uma doação a
 
 Existem mapas de localização tanto pro evento como para a cerimônia, além de um formulário para confirmação de convidados.
 
+## Utilizado:
+ Api NodeJs / MongoDb
+ Redux Saga
+ Geolocalização / Watching Geo
+ Camera Mobile
+ Integração com o gateway do pagar.me (Sandbox)
+
+
 ### Feito Com
 React Native
 
-
-
-<!-- CONTACT -->
-
-## Contato
-
-Carlos Augusto
