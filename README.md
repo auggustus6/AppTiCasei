@@ -1,0 +1,31 @@
+
+<br />
+<p align="center">
+  <a href="https://rocketseat.com.br">
+    <img src="https://iniciodesign.com.br/images/appticasei.png" alt="Logo">
+  </a>
+
+  <h3 align="center">Aplicativo Ti Casei</h3>
+</p>
+
+
+## Sobre o Projeto
+
+Este projeto foi desenvolvido sem fins lucrativos. E tem por objetivo interagir os noivos com os convidados. Além de facilitar a comunicação entre todos.
+
+Através do mural e da galeria os convidados podem curtir, comentar e postar imagens, tudo mediante à um cadastro realizado via facebook ou email/senha padrões.
+
+Na aba gravata online, o convidado após o cadastro pode realizar uma doação aos noivos que irá cair diretamente em sua conta.
+
+Existem mapas de localização tanto pro evento como para a cerimônia, além de um formulário para confirmação de convidados.
+
+### Feito Com
+React Native
+
+
+
+<!-- CONTACT -->
+
+## Contato
+
+Carlos Augusto
