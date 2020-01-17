@@ -2,7 +2,7 @@
   <h3 align="center">Aplicativo Ti Casei</h3>
 <br />
 <p align="center">
-  <a href="https://rocketseat.com.br">
+  <a href="https://iniciodesign.com.br/">
     <img src="https://iniciodesign.com.br/images/appticasei.png" alt="Logo">
   </a>
 
