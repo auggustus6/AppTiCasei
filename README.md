@@ -1,5 +1,5 @@
 
-  <h3 align="center">Aplicativo Ti Casei</h3>
+  <h3 align="center">Mobile TiCasei [ 🐉 Elka ] </h3>
 <br />
 <p align="center">
   <a href="https://iniciodesign.com.br/">
@@ -9,7 +9,7 @@
 </p>
 
 
-## Sobre o Projeto
+### 💻 Sobre o Projeto
 
 Este projeto foi desenvolvido sem fins lucrativos. E tem por objetivo interagir os noivos com os convidados. Além de facilitar a comunicação entre todos.
 
@@ -19,7 +19,7 @@ Na aba gravata online, o convidado após o cadastro pode realizar uma doação a
 
 Existem mapas de localização tanto pro evento como para a cerimônia, além de um formulário para confirmação de convidados.
 
-## Utilizado:
+## ☕ Utilizado:
  Api NodeJs / MongoDb <br>
  Redux Saga <br>
  Geolocalização / Watching Geo <br>
@@ -27,6 +27,5 @@ Existem mapas de localização tanto pro evento como para a cerimônia, além de
  Integração com o gateway do pagar.me (Sandbox)<br>
 
 
-### Feito Com
-React Native
+### Feito Com ♥ Carlos Augusto
 
