@@ -3,7 +3,7 @@
 <br />
 <p align="center">
   <a href="https://iniciodesign.com.br/">
-    <img src="https://iniciodesign.com.br/images/appticasei.png" alt="Logo">
+    <img src="https://iniciodesign.com.br/projetos/Ticasei.png" alt="Logo">
   </a>
 
 </p>
@@ -22,10 +22,10 @@ Existem mapas de localização tanto pro evento como para a cerimônia, além de
 ## ☕ Utilizado:
  Api NodeJs / MongoDb <br>
  Redux Saga <br>
- Geolocalização / Watching Geo <br>
- Camera Mobile <br>
+ Geolocalização <br>
+ Camera  <br>
  Integração com o gateway do pagar.me (Sandbox)<br>
 
 
-### Feito Com ♥ Carlos Augusto
+### Feito Com ♥ por Carlos Augusto
 
